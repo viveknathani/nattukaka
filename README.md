@@ -1,0 +1,8 @@
+# nattukaka
+
+:)
+
+## license
+
+[MIT](./LICENSE)
+
