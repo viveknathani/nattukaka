@@ -8,5 +8,6 @@ func (s *Server) SetupRoutes() {
 	s.Router.HandleFunc("/blog/{title}", s.serveMarkdownPost)
 	s.Router.HandleFunc("/lab/{title}", s.serveMarkdownPost)
 	s.Router.HandleFunc("/systems/{title}", s.serveMarkdownPost)
+	s.Router.HandleFunc("/notepad", s.serveNotepad)
 	s.setupStatic("static")
 }

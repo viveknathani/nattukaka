@@ -1,0 +1,27 @@
+body {
+    font-family: 'Consolas';
+    background-color: rgb(29, 29, 29);
+    color: rgb(255, 255, 255);
+}
+
+textarea {
+    resize: none;
+    background-color: rgb(29, 29, 29);
+    border: none;
+    color: white;
+    font-family: 'Consolas';
+    width: 100%;
+}
+
+#save {
+    outline: 0;
+    border: 0;
+    background: rgb(1, 117, 40);
+    padding: 5px 25px;
+    font-weight: 400;
+    color: white;
+    cursor:pointer;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    margin-bottom: 1%;
+}
