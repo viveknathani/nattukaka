@@ -4,10 +4,12 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/viveknathani/nattukaka/service"
 )
 
 type Server struct {
-	Router *mux.Router
+	Router  *mux.Router
+	Service *service.Service
 }
 
 func NewServer() *Server {
