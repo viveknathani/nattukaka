@@ -74,3 +74,60 @@ func TestCreateAndGetUser(t *testing.T) {
 		log.Fatal(err)
 	}
 }
+
+func TestTodos(t *testing.T) {
+
+	u := &entity.User{
+		Name:     "alice",
+		Email:    "alice@gmail.com",
+		Password: []byte("someHashedPwd44555"),
+	}
+
+	err := db.CreateUser(u)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	deadline := "2022-08-13"
+	td := &entity.Todo{
+		UserId:      u.Id,
+		Task:        "buy milk",
+		Status:      "pending",
+		Deadline:    &deadline,
+		CompletedAt: nil,
+	}
+
+	err = db.CreateTodo(td)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// update task
+	td.Task = "buy vegetables"
+	err = db.UpdateTodo(td)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// update status and completedAt
+	td.Status = "done"
+	completed := "2022-08-14"
+	td.CompletedAt = &completed
+	err = db.UpdateTodo(td)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = db.DeleteTodo(td.Id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// clean up
+	err = db.DeleteUser(u.Id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+}

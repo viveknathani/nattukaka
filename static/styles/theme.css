@@ -7,3 +7,12 @@ body {
 a, a:visited, a:hover, a:active {
     color: #0475cc
 }
+
+button {
+    background-color: #0475cc;
+    color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 2px 4px;
+    cursor: pointer;
+}

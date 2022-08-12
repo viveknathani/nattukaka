@@ -101,9 +101,7 @@ func (s *Server) middlewareTokenVerification(handler http.HandlerFunc) http.Hand
 		cookie, err := r.Cookie("token")
 		if err != nil {
 			s.Service.Logger.Error(err.Error(), zapReqID(r))
-			if ok := sendClientError(w, "not authenticated"); ok != nil {
-				s.Service.Logger.Error(ok.Error(), zapReqID(r))
-			}
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
 
@@ -111,9 +109,7 @@ func (s *Server) middlewareTokenVerification(handler http.HandlerFunc) http.Hand
 		if err != nil {
 
 			s.Service.Logger.Error(err.Error(), zapReqID(r))
-			if ok := sendClientError(w, "not authenticated"); ok != nil {
-				s.Service.Logger.Error(ok.Error(), zapReqID(r))
-			}
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
 

@@ -13,6 +13,11 @@ func (s *Server) SetupRoutes() {
 	s.Router.HandleFunc("/systems/{title}", s.serveMarkdownPost)
 	s.Router.HandleFunc("/notepad", s.serveNotepad)
 	s.Router.HandleFunc("/login", s.serveLogin)
+	s.Router.HandleFunc("/todo", s.middlewareTokenVerification(s.serveTodo))
 	s.Router.HandleFunc("/api/user/login/", setContentTypeJSON(s.handleLogin)).Methods(http.MethodPost)
+	s.Router.HandleFunc("/api/todo/", setContentTypeJSON(s.middlewareTokenVerification(s.handleTodoCreate))).Methods(http.MethodPost)
+	s.Router.HandleFunc("/api/todo/", setContentTypeJSON(s.middlewareTokenVerification(s.handleTodoUpdate))).Methods(http.MethodPut)
+	s.Router.HandleFunc("/api/todo/", setContentTypeJSON(s.middlewareTokenVerification(s.handleTodoDelete))).Methods(http.MethodDelete)
+	s.Router.HandleFunc("/api/todo/all", setContentTypeJSON(s.middlewareTokenVerification(s.handleTodoPending))).Methods(http.MethodGet)
 	s.setupStatic("static")
 }

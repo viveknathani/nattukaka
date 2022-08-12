@@ -13,4 +13,7 @@ var (
 	ErrInvalidEmailPassword = errors.New("Invalid email/password combination.")
 	ErrNilUser              = errors.New("Nil user.")
 	ErrInvalidToken         = errors.New("Invalid token.")
+	ErrNoInsert             = errors.New("Insertion failed, check logs.")
+	ErrNoFetch              = errors.New("Fetching failed, check logs.")
+	ErrNoRemove             = errors.New("Removal failed, check logs.")
 )

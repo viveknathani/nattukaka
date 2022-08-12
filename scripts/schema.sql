@@ -10,3 +10,14 @@ create table if not exists users(
     email varchar(319) not null,
     password bytea not null
 );
+
+create type taskStatus as enum('pending', 'done');
+
+create table if not exists todos(
+    id uuid primary key,
+    userId uuid references users(id),
+    task varchar not null,
+    status taskStatus,
+    deadline date,
+    completedAt date
+);

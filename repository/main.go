@@ -16,6 +16,23 @@ type userRepository interface {
 	DeleteUser(id string) error
 }
 
+type todoRepository interface {
+
+	// CreateTodo will create a new todo in the database with a
+	// new UUID.
+	CreateTodo(t *entity.Todo) error
+
+	// GetAllTodos will return all todos for a given user using userId.
+	GetAllPendingTodos(userId string) (*[]entity.Todo, error)
+
+	// UpdateTodo will update a todo in the database.
+	UpdateTodo(t *entity.Todo) error
+
+	// DeleteTodo will delete a todo from the database.
+	DeleteTodo(id string) error
+}
+
 type Repository interface {
+	todoRepository
 	userRepository
 }

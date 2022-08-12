@@ -16,3 +16,20 @@ type userLoginRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
+
+type todoCreateRequest struct {
+	Task     string `json:"task"`
+	Deadline string `json:"deadline"`
+}
+
+type todoUpdateRequest struct {
+	Id          string `json:"id"`
+	Task        string `json:"task"`
+	Status      string `json:"status"`
+	Deadline    string `json:"deadline"`
+	CompletedAt string `json:"completedAt"`
+}
+
+type todoDeleteRequest struct {
+	Id string `json:"id"`
+}
