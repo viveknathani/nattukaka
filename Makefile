@@ -5,4 +5,4 @@ test:
 	go test -v ./...
 
 run:
-	export PORT=8080 && ./bin/nattukaka
+	./bin/nattukaka

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"github.com/viveknathani/nattukaka/cache"
 	"github.com/viveknathani/nattukaka/database"
 	"github.com/viveknathani/nattukaka/server"
@@ -23,6 +25,11 @@ var redisServer string = ""
 var jwtSecret string = ""
 
 func init() {
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	port = os.Getenv("PORT")
 	databaseServer = os.Getenv("DATABASE_URL")
 	redisServer = os.Getenv("REDIS_URL")
