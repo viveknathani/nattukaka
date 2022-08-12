@@ -12,12 +12,6 @@ type Server struct {
 	Service *service.Service
 }
 
-func NewServer() *Server {
-	return &Server{
-		Router: mux.NewRouter(),
-	}
-}
-
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.Router.ServeHTTP(w, r)
 }

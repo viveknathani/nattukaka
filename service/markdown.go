@@ -6,8 +6,6 @@ import (
 	"os"
 )
 
-type Service struct{}
-
 func (s *Service) GetAllPosts(directory string) []string {
 
 	result := make([]string, 0)
