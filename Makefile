@@ -1,5 +1,6 @@
 build:
-	go build -o ./bin/nattukaka main.go
+	go build -o ./bin/nattukaka ./cmd/server
+	go build -o ./bin/signup ./cmd/signup
 
 test:
 	go test -v ./...
