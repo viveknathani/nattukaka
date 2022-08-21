@@ -18,6 +18,18 @@ func (service *Service) CreateTodo(ctx context.Context, t *entity.Todo) error {
 	return nil
 }
 
+func (service *Service) UpdateTodo(ctx context.Context, t *entity.Todo) error {
+
+	service.Logger.Info("database: update todo start.", zapReqID(ctx))
+	err := service.Repo.UpdateTodo(t)
+	if err != nil {
+		service.Logger.Error(err.Error(), zapReqID(ctx))
+		return ErrNoInsert
+	}
+	service.Logger.Info("database: update todo end.", zapReqID(ctx))
+	return nil
+}
+
 func (service *Service) GetAllPendingTodos(ctx context.Context, userId string) (*[]entity.Todo, error) {
 
 	service.Logger.Info("database: fetch todos start.", zapReqID(ctx))

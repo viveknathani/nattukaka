@@ -21,7 +21,6 @@ func (s *Server) handleTodoPending(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(*(*list)[0].Deadline)
 	data, err := json.Marshal(list)
 	if err != nil {
 		s.Service.Logger.Error(err.Error(), zapReqID(r))
@@ -81,17 +80,14 @@ func (s *Server) handleTodoUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var completedAt *string = nil
-	if t.CompletedAt != "" {
-		completedAt = &t.CompletedAt
-	}
-	err = s.Service.CreateTodo(r.Context(), &entity.Todo{
+	fmt.Println("completedAt is: ", t.CompletedAt)
+	err = s.Service.UpdateTodo(r.Context(), &entity.Todo{
 		UserId:      shared.ExtractUserID(r.Context()),
 		Id:          t.Id,
 		Task:        t.Task,
 		Status:      t.Status,
 		Deadline:    &t.Deadline,
-		CompletedAt: completedAt,
+		CompletedAt: &t.CompletedAt,
 	})
 
 	if err != nil {
