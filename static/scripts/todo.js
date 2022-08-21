@@ -5,6 +5,7 @@ function getAllTodos() {
     }).then((response) => response.json())
     .then((data) => {
         const tbody = document.getElementsByTagName('tbody')[0];
+        tbody.querySelectorAll('*').forEach(kid => kid.remove());
         for (let i = 0; i < data.length; ++i) {
             const tr = document.createElement('tr');
             const task = document.createElement('td');
@@ -44,7 +45,8 @@ function getCurrentDate() {
     const dd = String(today.getDate()).padStart(2, '0');
     const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     const yyyy = today.getFullYear();
-    today = yyyy + '-' + dd + '-' + mm;
+    today = yyyy + '-' + mm + '-' + dd;
+    return today;
 }
 
 function markDone(todo) {
@@ -55,6 +57,7 @@ function markDone(todo) {
             id: todo.id,
             status: "done",
             deadline: todo.deadline,
+            task: todo.task,
             completedAt: getCurrentDate()                    
         })
     }).then(() => {
