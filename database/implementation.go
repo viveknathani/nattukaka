@@ -14,7 +14,7 @@ const (
 	statementSelectUserFromEmail = "select * from users where email = $1;"
 	statementDeleteUser          = "delete from users where id = $1;"
 	statementInsertTodo          = "insert into todos (id, userId, task, status, deadline, completedAt) values ($1, $2, $3, $4, $5, $6);"
-	statementSelectTodos         = "select * from todos where userId = $1 and status = 'pending';"
+	statementSelectTodos         = "select * from todos where userId = $1 and status = 'pending' order by deadline;"
 	statementUpdateTodo          = "update todos set task = $1, status = $2, deadline = $3, completedAt = $4 where id = $5 and userId = $6;"
 	statementDeleteTodo          = "delete from todos where id = $1;"
 )
