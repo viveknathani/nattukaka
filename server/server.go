@@ -50,7 +50,21 @@ func showRequestMetaData(l *zap.Logger, r *http.Request) {
 		Type:   zapcore.StringType,
 	}
 
-	l.Info("incoming request", zapReqID(r), reqMethod, reqPath)
+	ip := zapcore.Field{
+		Key:    "ip",
+		String: getIP(r),
+		Type:   zapcore.StringType,
+	}
+
+	l.Info("incoming request", zapReqID(r), reqMethod, reqPath, ip)
+}
+
+func getIP(r *http.Request) string {
+	forwarded := r.Header.Get("X-FORWARDED-FOR")
+	if forwarded != "" {
+		return forwarded
+	}
+	return r.RemoteAddr
 }
 
 func showRequestEnd(l *zap.Logger, r *http.Request) {
