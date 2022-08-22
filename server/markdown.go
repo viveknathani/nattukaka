@@ -23,17 +23,19 @@ func (s *Server) serveMarkdownIndex(w http.ResponseWriter, r *http.Request) {
 	indexFilePath := "static/pages/posts.html"
 	t, err := template.ParseFiles(indexFilePath)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		log.Fatal(err)
+		if ok := sendServerError(w); ok != nil {
+			s.Service.Logger.Error(ok.Error(), zapReqID(r))
+		}
 		return
 	}
 
 	err = t.Execute(w, blogIndexPageVariables{
-		PostList: s.Service.GetAllPosts(directory),
+		PostList: s.Service.GetAllPosts(r.Context(), directory),
 	})
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		log.Fatal(err)
+		if ok := sendServerError(w); ok != nil {
+			s.Service.Logger.Error(ok.Error(), zapReqID(r))
+		}
 		return
 	}
 }
@@ -44,7 +46,8 @@ func addViewPort(input []byte) []byte {
 	stream := string(input)
 	idx := strings.Index(stream, keyword)
 	if idx == -1 {
-		log.Fatal("Failed to add meta viewport")
+		log.Print("Failed to add meta viewport")
+		return input
 	}
 	end := idx + len(keyword) - 1
 	arr := make([]byte, 0)
@@ -69,7 +72,8 @@ func markdowntoHTML(source string, title string, cssFile string) []byte {
 
 	file, err := os.Open(source)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		return []byte("")
 	}
 	defer file.Close()
 

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 
 	"github.com/viveknathani/nattukaka/entity"
@@ -134,12 +133,16 @@ func (s *Server) serveTodo(w http.ResponseWriter, r *http.Request) {
 
 	p, err := template.ParseFiles("static/pages/todo.html")
 	if err != nil {
-		log.Fatal(err)
+		if ok := sendServerError(w); ok != nil {
+			s.Service.Logger.Error(ok.Error(), zapReqID(r))
+		}
 		return
 	}
 	err = p.Execute(w, nil)
 	if err != nil {
-		log.Fatal(err)
+		if ok := sendServerError(w); ok != nil {
+			s.Service.Logger.Error(ok.Error(), zapReqID(r))
+		}
 		return
 	}
 }
