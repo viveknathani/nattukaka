@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/theme.css">
+    <title>viveknathani - notes</title>
+</head>
+<body>
+    <h3>notes</h3>
+    {{range .NotesList}}
+    <p><a href="/note?id={{.Id}}">{{.Title}}</a></p>
+    {{end}}
+
+    <form>
+        <input id="note-title" type="text">
+        <button id="note-submit" type="submit">create</button>
+    </form>
+
+    <script>
+        function createNote(event) {
+            event.preventDefault();
+            const endpoint = "/api/note"
+            const title = document.getElementById("note-title").value;
+            fetch(endpoint, {
+                method: "POST",
+                body: JSON.stringify({
+                    title
+                })
+            }).then((response) => response.json())
+            .then(() => {
+                window.location.reload();
+            }).catch((err) => console.log(err));
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("note-submit").addEventListener('click', createNote);
+        });
+    </script>
+</body>
+</html>

@@ -33,3 +33,13 @@ type todoUpdateRequest struct {
 type todoDeleteRequest struct {
 	Id string `json:"id"`
 }
+
+type noteCreateRequest struct {
+	Title string `json:"title"`
+}
+
+type noteUpdateRequest struct {
+	Id      string `json:"id"`
+	Title   string `json:"title"`
+	Content string `json:"content"`
+}

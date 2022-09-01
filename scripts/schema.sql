@@ -21,3 +21,10 @@ create table if not exists todos(
     deadline date,
     completedAt date
 );
+
+create table if not exists notes(
+    id uuid primary key,
+    userId uuid references users(id),
+    title varchar not null,
+    content text
+);

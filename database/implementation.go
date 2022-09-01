@@ -10,13 +10,17 @@ import (
 )
 
 const (
-	statementInsertUser          = "insert into users (id, name, email, password) values ($1, $2, $3, $4);"
-	statementSelectUserFromEmail = "select * from users where email = $1;"
-	statementDeleteUser          = "delete from users where id = $1;"
-	statementInsertTodo          = "insert into todos (id, userId, task, status, deadline, completedAt) values ($1, $2, $3, $4, $5, $6);"
-	statementSelectTodos         = "select * from todos where userId = $1 and status = 'pending' order by deadline;"
-	statementUpdateTodo          = "update todos set task = $1, status = $2, deadline = $3, completedAt = $4 where id = $5 and userId = $6;"
-	statementDeleteTodo          = "delete from todos where id = $1;"
+	statementInsertUser             = "insert into users (id, name, email, password) values ($1, $2, $3, $4);"
+	statementSelectUserFromEmail    = "select * from users where email = $1;"
+	statementDeleteUser             = "delete from users where id = $1;"
+	statementInsertTodo             = "insert into todos (id, userId, task, status, deadline, completedAt) values ($1, $2, $3, $4, $5, $6);"
+	statementSelectTodos            = "select * from todos where userId = $1 and status = 'pending' order by deadline;"
+	statementUpdateTodo             = "update todos set task = $1, status = $2, deadline = $3, completedAt = $4 where id = $5 and userId = $6;"
+	statementDeleteTodo             = "delete from todos where id = $1;"
+	statementInsertNote             = "insert into notes (id, userId, title) values ($1, $2, $3);"
+	statementUpdateNote             = "update notes set content = $1 where id = $2 and userId = $3;"
+	statementSelectNotes            = "select id, title from notes where userId = $1"
+	statementSelectNotesWithContent = "select * from notes where id = $1 and userId = $2"
 )
 
 // CreateUser will create a new user in the database and will
@@ -101,4 +105,61 @@ func (db *Database) UpdateTodo(t *entity.Todo) error {
 // DeleteTodo will delete a todo from the database.
 func (db *Database) DeleteTodo(id string) error {
 	return db.execWithTransaction(statementDeleteTodo, id)
+}
+
+func (db *Database) CreateNote(n *entity.Note) error {
+
+	n.Id = uuid.New().String()
+	err := db.execWithTransaction(statementInsertNote, n.Id, n.UserId, n.Title)
+	return err
+}
+
+func (db *Database) UpdateNote(n *entity.Note) error {
+
+	err := db.execWithTransaction(statementUpdateNote, n.Content, n.Id, n.UserId)
+	return err
+}
+
+func (db *Database) GetAllNotes(userId string) (*[]entity.Note, error) {
+
+	result := make([]entity.Note, 0)
+	err := db.queryWithTransaction(statementSelectNotes, func(rows *sql.Rows) error {
+		for rows.Next() {
+			var n entity.Note
+			err := rows.Scan(&n.Id, &n.Title)
+			if err != nil {
+				return err
+			}
+			n.UserId = ""
+			n.Content = ""
+			result = append(result, n)
+		}
+		return nil
+	}, userId)
+
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
+}
+
+func (db *Database) GetNote(id string, userId string) (*[]entity.Note, error) {
+
+	result := make([]entity.Note, 0)
+	err := db.queryWithTransaction(statementSelectNotesWithContent, func(rows *sql.Rows) error {
+		for rows.Next() {
+			var n entity.Note
+			err := rows.Scan(&n.Id, &n.UserId, &n.Title, &n.Content)
+			if err != nil {
+				return err
+			}
+			result = append(result, n)
+		}
+		return nil
+	}, id, userId)
+
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
 }

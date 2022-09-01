@@ -19,6 +19,11 @@ func (s *Server) SetupRoutes() {
 	s.Router.HandleFunc("/api/todo/", setContentTypeJSON(s.middlewareTokenVerification(s.handleTodoUpdate))).Methods(http.MethodPut)
 	s.Router.HandleFunc("/api/todo/", setContentTypeJSON(s.middlewareTokenVerification(s.handleTodoDelete))).Methods(http.MethodDelete)
 	s.Router.HandleFunc("/api/todo/all", setContentTypeJSON(s.middlewareTokenVerification(s.handleTodoPending))).Methods(http.MethodGet)
+	s.Router.HandleFunc("/note", s.middlewareTokenVerification(s.handleNotePage)).Methods((http.MethodGet))
+	s.Router.HandleFunc("/notes", s.middlewareTokenVerification(s.handleNotesIndex)).Methods(http.MethodGet)
+	s.Router.HandleFunc("/api/note", setContentTypeJSON(s.middlewareTokenVerification(s.handleNoteContent))).Methods(http.MethodGet)
+	s.Router.HandleFunc("/api/note", setContentTypeJSON(s.middlewareTokenVerification(s.handleNoteCreate))).Methods(http.MethodPost)
+	s.Router.HandleFunc("/api/note", setContentTypeJSON(s.middlewareTokenVerification(s.handleNoteUpdate))).Methods(http.MethodPut)
 	s.Router.NotFoundHandler = http.HandlerFunc(s.serve404)
 	s.setupStatic("static")
 }

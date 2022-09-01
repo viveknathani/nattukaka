@@ -32,7 +32,15 @@ type todoRepository interface {
 	DeleteTodo(id string) error
 }
 
+type noteRepository interface {
+	CreateNote(n *entity.Note) error
+	UpdateNote(n *entity.Note) error
+	GetAllNotes(userId string) (*[]entity.Note, error)
+	GetNote(id string, userId string) (*[]entity.Note, error)
+}
+
 type Repository interface {
 	todoRepository
 	userRepository
+	noteRepository
 }
