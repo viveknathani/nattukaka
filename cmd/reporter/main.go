@@ -37,7 +37,7 @@ func init() {
 
 func getRecords(path string) [][]string {
 
-	file, err := os.Open("memory.txt")
+	file, err := os.Open(path)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -109,8 +109,8 @@ func plotMemoryGraph(memory [][]string) {
 
 func main() {
 
-	memory := getRecords("~/memory.txt")
-	health := getRecords("~/health.txt")
+	memory := getRecords("/var/memory.txt")
+	health := getRecords("/var/health.txt")
 	uptime := getUptime(health)
 	plotMemoryGraph(memory)
 
