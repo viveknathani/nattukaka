@@ -24,6 +24,7 @@ func (s *Server) SetupRoutes() {
 	s.Router.HandleFunc("/api/note", setContentTypeJSON(s.middlewareTokenVerification(s.handleNoteContent))).Methods(http.MethodGet)
 	s.Router.HandleFunc("/api/note", setContentTypeJSON(s.middlewareTokenVerification(s.handleNoteCreate))).Methods(http.MethodPost)
 	s.Router.HandleFunc("/api/note", setContentTypeJSON(s.middlewareTokenVerification(s.handleNoteUpdate))).Methods(http.MethodPut)
+	s.Router.HandleFunc("/health", s.handleHealth)
 	s.Router.NotFoundHandler = http.HandlerFunc(s.serve404)
 	s.setupStatic("static")
 }
