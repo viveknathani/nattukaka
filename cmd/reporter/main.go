@@ -24,6 +24,12 @@ const MAX_HN_STORIES = 10
 
 var telegramApiKey string = ""
 
+type HackerNewsAPIBody struct {
+	ChatId         int64  `json:"chat_id"`
+	Text           string `json:"text"`
+	DisablePreview bool   `json:"disable_web_page_preview"`
+}
+
 func init() {
 	err := godotenv.Load()
 	if err != nil {
@@ -105,7 +111,7 @@ func plotMemoryGraph(memory [][]string) {
 
 func getTopStoriesFromHN() []interface{} {
 
-	response, err := http.Get("https://hacker-news.firebaseio.com/v0/beststories.json")
+	response, err := http.Get("https://hacker-news.firebaseio.com/v0/topstories.json")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -162,20 +168,17 @@ func sendToTelegram(content string, photoPath string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	buf = new(bytes.Buffer)
-	writer = multipart.NewWriter(buf)
-	writerWithChat, err = writer.CreateFormField("chat_id")
-	writerWithChat.Write([]byte("5501101308"))
+	body := &HackerNewsAPIBody{
+		ChatId:         5501101308,
+		Text:           content,
+		DisablePreview: true,
+	}
+
+	bodyJSON, err := json.Marshal(body)
 	if err != nil {
 		log.Fatal(err)
 	}
-	writerWithContent, err := writer.CreateFormField("text")
-	writerWithContent.Write([]byte(content))
-	if err != nil {
-		log.Fatal(err)
-	}
-	writer.Close()
-	_, err = http.Post(telegramHost+"/sendMessage", writer.FormDataContentType(), buf)
+	_, err = http.Post(telegramHost+"/sendMessage", "application/json", bytes.NewReader(bodyJSON))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -193,11 +196,11 @@ func main() {
 	content += fmt.Sprintf("uptime: %f", uptime)
 	content += "%\n"
 	for i := 0; i < MAX_HN_STORIES; i++ {
-		id := data[i].(float64)
-		data := getHNStory(int64(id))
+		id := int64(data[i].(float64))
+		data := getHNStory(id)
 		ob := data.(map[string]interface{})
 		title := ob["title"].(string)
-		url := ob["url"].(string)
+		url := fmt.Sprintf("news.ycombinator.com/item?id=%d", id)
 		content += fmt.Sprintf("%d. %s - %s\n", i+1, title, url)
 	}
 
