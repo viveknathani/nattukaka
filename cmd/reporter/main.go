@@ -10,14 +10,9 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
-	"strconv"
-	"strings"
+	"os/exec"
 
 	"github.com/joho/godotenv"
-	"gonum.org/v1/plot"
-	"gonum.org/v1/plot/plotter"
-	"gonum.org/v1/plot/plotutil"
-	"gonum.org/v1/plot/vg"
 )
 
 const MAX_HN_STORIES = 10
@@ -67,45 +62,13 @@ func getUptime(health [][]string) float64 {
 	return result
 }
 
-func plotMemoryGraph(memory [][]string) {
+func plotMemoryGraph() {
 
-	timeStamps := make([]float64, 0)
-	for _, dataPoint := range memory {
-		seconds, err := strconv.ParseInt(dataPoint[0], 10, 64)
-		if err != nil {
-			log.Fatal(err)
-		}
-		timeStamps = append(timeStamps, float64(seconds))
-	}
-
-	megabytes := make([]float64, 0)
-	for _, dataPoint := range memory {
-		megabyte, err := strconv.ParseFloat(strings.TrimSpace(dataPoint[1]), 64)
-		if err != nil {
-			log.Fatal(err)
-		}
-		megabytes = append(megabytes, megabyte/1000)
-	}
-
-	pts := make(plotter.XYs, len(megabytes))
-	for i := range pts {
-		pts[i].X = timeStamps[i]
-		pts[i].Y = megabytes[i]
-	}
-
-	p := plot.New()
-
-	p.Title.Text = "nattukaka - memory usage"
-	p.X.Label.Text = "timestamp (unix epoch)"
-	p.Y.Label.Text = "memory (MB)"
-
-	err := plotutil.AddLinePoints(p, pts)
+	cmd := exec.Command("python3", "scripts/graph.py")
+	err := cmd.Run()
+	//cmd.Stderr = os.Stderr
 	if err != nil {
-		panic(err)
-	}
-
-	if err := p.Save(4*vg.Inch, 3*vg.Inch, "graph.PNG"); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
 
@@ -186,10 +149,9 @@ func sendToTelegram(content string, photoPath string) {
 
 func main() {
 
-	memory := getRecordsFromCSVFile("/var/memory.txt")
 	health := getRecordsFromCSVFile("/var/health.txt")
 	uptime := getUptime(health)
-	plotMemoryGraph(memory)
+	plotMemoryGraph()
 	data := getTopStoriesFromHN()
 
 	content := "Hey There!\n"
