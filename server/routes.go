@@ -5,7 +5,7 @@ import "net/http"
 func (s *Server) SetupRoutes() {
 	s.Router.Use(setContentTypeFileFormat)
 	s.Router.HandleFunc("/", s.serveIndex)
-	s.Router.HandleFunc("/blog", s.serveMarkdownIndex)
+	s.Router.HandleFunc("/{blog:blog\\/?}", s.serveMarkdownIndex)
 	s.Router.HandleFunc("/lab", s.serveMarkdownIndex)
 	s.Router.HandleFunc("/systems", s.serveMarkdownIndex)
 	s.Router.HandleFunc("/blog/{title}", s.serveMarkdownPost)
