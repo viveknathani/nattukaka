@@ -1,8 +1,7 @@
 const editor = new SimpleMDE({ element: document.getElementById("editor") });
 
-function getNoteContent() {
-    const id = (new URL(document.location)).searchParams.get('id');
-    const title = document.getElementById("title");
+function getNoteContent(id) {
+    localStorage.setItem("note-id", id);
     fetch(`/api/note?id=${id}`, {
         method: 'GET'
     }).then((res) => res.json())
@@ -14,8 +13,7 @@ function getNoteContent() {
 }
 
 function updateNoteContent() {
-    const id = (new URL(document.location)).searchParams.get('id');
-    const message = document.getElementById("message");
+    const id = localStorage.getItem("note-id");
     fetch('/api/note', {
         method: 'PUT',
         body: JSON.stringify({
@@ -41,5 +39,4 @@ function updateNoteContent() {
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("note-update").addEventListener('click', updateNoteContent);
     document.getElementById("go-back").addEventListener('click', () => { window.history.back() });
-    getNoteContent();
 });

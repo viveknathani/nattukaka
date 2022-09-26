@@ -44,27 +44,6 @@ func (s *Server) handleNotesIndex(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (s *Server) handleNotePage(w http.ResponseWriter, r *http.Request) {
-
-	indexFilePath := "static/pages/note_content.html"
-	t, err := template.ParseFiles(indexFilePath)
-	if err != nil {
-		if ok := sendServerError(w); ok != nil {
-			s.Service.Logger.Error(ok.Error(), zapReqID(r))
-		}
-		return
-	}
-
-	err = t.Execute(w, nil)
-
-	if err != nil {
-		if ok := sendServerError(w); ok != nil {
-			s.Service.Logger.Error(ok.Error(), zapReqID(r))
-		}
-		return
-	}
-}
-
 func (s *Server) handleNoteContent(w http.ResponseWriter, r *http.Request) {
 
 	params := r.URL.Query()
