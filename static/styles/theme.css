@@ -16,3 +16,9 @@ button {
     padding: 2px 4px;
     cursor: pointer;
 }
+
+img {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+}
