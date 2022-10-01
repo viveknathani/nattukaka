@@ -11,10 +11,11 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/russross/blackfriday/v2"
+	"github.com/viveknathani/nattukaka/entity"
 )
 
 type blogIndexPageVariables struct {
-	PostList []string
+	PostList []entity.Post
 }
 
 func (s *Server) serveMarkdownIndex(w http.ResponseWriter, r *http.Request) {
