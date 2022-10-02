@@ -39,6 +39,7 @@ func init() {
 		log.Fatal("Error loading .env file")
 	}
 	databaseServer = os.Getenv("DATABASE_URL")
+	cache = make(map[string][]byte)
 }
 
 func getIPInfo(ip string) ([]byte, error) {
