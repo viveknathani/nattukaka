@@ -17,6 +17,8 @@ import (
 
 var databaseServer string = ""
 
+var cache map[string][]byte
+
 // getDatabase will init and return a db
 func getDatabase() *database.Database {
 
@@ -41,6 +43,9 @@ func init() {
 
 func getIPInfo(ip string) ([]byte, error) {
 
+	if cache[ip] != nil {
+		return cache[ip], nil
+	}
 	response, err := http.Get("http://ip-api.com/json/" + ip)
 	if err != nil {
 		return nil, err
@@ -49,6 +54,7 @@ func getIPInfo(ip string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	cache[ip] = data
 	return data, nil
 }
 
