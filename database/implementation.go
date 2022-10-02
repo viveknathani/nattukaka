@@ -21,6 +21,7 @@ const (
 	statementUpdateNote             = "update notes set content = $1 where id = $2 and userId = $3;"
 	statementSelectNotes            = "select id, title from notes where userId = $1"
 	statementSelectNotesWithContent = "select * from notes where id = $1 and userId = $2"
+	statementInsertLog              = "insert into logs (level, ts, path, message, requestid, method, ip, info) values ($1, $2, $3, $4, $5, $6, $7, $8);"
 )
 
 // CreateUser will create a new user in the database and will
@@ -162,4 +163,10 @@ func (db *Database) GetNote(id string, userId string) (*[]entity.Note, error) {
 		return nil, err
 	}
 	return &result, nil
+}
+
+func (db *Database) InsertLog(l *entity.Log) error {
+
+	err := db.execWithTransaction(statementInsertLog, l.Level, l.Ts, l.Path, l.Message, l.RequestID, l.Method, l.IP, l.Info)
+	return err
 }

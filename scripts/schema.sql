@@ -28,3 +28,14 @@ create table if not exists notes(
     title varchar not null,
     content text
 );
+
+create table if not exists logs(
+    level varchar,
+    ts real,
+    path varchar,
+    message text,
+    requestID varchar,
+    method varchar,
+    ip varchar,
+    info jsonb
+);
