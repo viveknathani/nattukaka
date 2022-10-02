@@ -109,7 +109,6 @@ func main() {
 			os.Exit(1)
 		}
 	}()
-	fmt.Println("Server started!")
 	<-done
 	shutdown(srv, db, memory)
 }
@@ -128,5 +127,4 @@ func shutdown(srv *server.Server, db *database.Database, memory *cache.Cache) {
 	if err != nil {
 		fmt.Print(err)
 	}
-	fmt.Println("goodbye!")
 }
