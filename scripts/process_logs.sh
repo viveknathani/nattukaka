@@ -1,3 +1,4 @@
 #!/bin/bash
 
-cd ~/nattukaka && go run cmd/reporter/main.go > /var/log_stats.txt
+cd ~/nattukaka && go run cmd/processor/main.go > /var/log_stats.txt
+rm /var/logs.txt
