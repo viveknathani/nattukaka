@@ -59,7 +59,9 @@ func processContent(db *database.Database, line []byte) error {
 	if err != nil {
 		return err
 	}
-	jsonObject.Info, err = getIPInfo(jsonObject.IP)
+	if jsonObject.IP != "" {
+		jsonObject.Info, err = getIPInfo(jsonObject.IP)
+	}
 	if err != nil {
 		return err
 	}
