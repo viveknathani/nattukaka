@@ -98,10 +98,10 @@ func main() {
 		}
 	}
 
-	top10VisitedPaths := "select path, count(*) from logs where path not like '/static/%' group by path order by count desc limit 10;"
-	top10IPs := `select ip, info -> 'country' as "country", count(*) from logs group by ip, info -> 'country';`
-	countryCount := `select info -> 'country' as "country", count(*) from logs group by info -> 'country';`
-	indianStateCount := `select info->'regionName' as "state", count(*) from logs where info -> 'country' = '\"India\"' group by info->'regionName';`
+	top10VisitedPaths := "select path, count(*) from logs where path not like '/static/%' and ip != '' group by path order by count desc limit 10;"
+	top10IPs := `select ip, info -> 'country' as "country", count(*) from logs where ip != '' group by ip, info -> 'country';`
+	countryCount := `select info -> 'country' as "country", count(*) from logs where ip != '' group by info -> 'country';`
+	indianStateCount := `select info->'regionName' as "state", count(*) from logs where info -> 'country' = '\"India\"' and ip != '' group by info->'regionName';`
 
 	out := ""
 	out += runStatementAndGetOutput(top10VisitedPaths)
