@@ -2,3 +2,4 @@
 
 echo $(date "+%s"),$(ps -C nattukaka -o rss --no-headers) >> /var/memory.txt;
 echo "$(date),$(curl -s -o /dev/null -I -w "%{http_code}\n" https://vivekn.dev/health)" >> /var/health.txt
+cd ~/nattukaka && go run cmd/processor/main.go > /var/log_stats.txt
