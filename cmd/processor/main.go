@@ -109,7 +109,5 @@ func main() {
 	out += runStatementAndGetOutput(countryCount)
 	out += runStatementAndGetOutput(indianStateCount)
 
-	if err := os.WriteFile("log_stats.txt", []byte(out), 0777); err != nil {
-		log.Fatal(err)
-	}
+	fmt.Println(out)
 }
