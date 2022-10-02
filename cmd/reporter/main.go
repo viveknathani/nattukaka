@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"mime/multipart"
 	"net/http"
@@ -106,7 +107,7 @@ func getHNStory(id int64) interface{} {
 	return payload
 }
 
-func sendToTelegram(content string, photoPath string) {
+func sendToTelegram(content string, stats string, photoPath string) {
 
 	telegramHost := fmt.Sprintf("https://api.telegram.org/bot%s", telegramApiKey)
 	buf := new(bytes.Buffer)
@@ -145,6 +146,21 @@ func sendToTelegram(content string, photoPath string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	body = &HackerNewsAPIBody{
+		ChatId:         5501101308,
+		Text:           stats,
+		DisablePreview: true,
+	}
+
+	bodyJSON, err = json.Marshal(body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = http.Post(telegramHost+"/sendMessage", "application/json", bytes.NewReader(bodyJSON))
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func main() {
@@ -166,5 +182,9 @@ func main() {
 		content += fmt.Sprintf("%d. %s - %s\n", i+1, title, url)
 	}
 
-	sendToTelegram(content, "graph.PNG")
+	stats, err := ioutil.ReadFile("/var/log_stats.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	sendToTelegram(content, string(stats), "graph.PNG")
 }
