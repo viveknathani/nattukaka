@@ -13,7 +13,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/viveknathani/nattukaka/cache"
 	"github.com/viveknathani/nattukaka/database"
-	"github.com/viveknathani/nattukaka/server"
+	"github.com/viveknathani/nattukaka/httpkaka"
 	"github.com/viveknathani/nattukaka/service"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -92,7 +92,7 @@ func main() {
 	logger := getLogger()
 	db := getDatabase()
 	memory, memoryConn := getCache()
-	srv := &server.Server{
+	srv := &httpkaka.Server{
 		Service: &service.Service{
 			Repo:      db,
 			Conn:      memoryConn,
@@ -113,7 +113,7 @@ func main() {
 	shutdown(srv, db, memory)
 }
 
-func shutdown(srv *server.Server, db *database.Database, memory *cache.Cache) {
+func shutdown(srv *httpkaka.Server, db *database.Database, memory *cache.Cache) {
 
 	err := srv.Service.Conn.Close()
 	if err != nil {

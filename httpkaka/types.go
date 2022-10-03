@@ -1,4 +1,4 @@
-package server
+package httpkaka
 
 // This file defines how the incoming and outgoing JSON payloads look like.
 
