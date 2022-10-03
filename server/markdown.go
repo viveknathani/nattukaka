@@ -30,8 +30,15 @@ func (s *Server) serveMarkdownIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	posts, err := s.Service.GetAllPosts(r.Context(), directory)
+	if err != nil {
+		if ok := sendServerError(w); ok != nil {
+			s.Service.Logger.Error(ok.Error(), zapReqID(r))
+		}
+		return
+	}
 	err = t.Execute(w, blogIndexPageVariables{
-		PostList: s.Service.GetAllPosts(r.Context(), directory),
+		PostList: posts,
 	})
 	if err != nil {
 		if ok := sendServerError(w); ok != nil {

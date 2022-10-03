@@ -16,4 +16,5 @@ var (
 	ErrNoInsert             = errors.New("Insertion failed, check logs.")
 	ErrNoFetch              = errors.New("Fetching failed, check logs.")
 	ErrNoRemove             = errors.New("Removal failed, check logs.")
+	ErrNoPostList           = errors.New("Could not get a list of posts, check logs.")
 )
