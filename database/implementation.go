@@ -108,6 +108,8 @@ func (db *Database) DeleteTodo(id string) error {
 	return db.execWithTransaction(statementDeleteTodo, id)
 }
 
+// CreateNote will create a new note in the database with
+// a new UUID.
 func (db *Database) CreateNote(n *entity.Note) error {
 
 	n.Id = uuid.New().String()
@@ -115,12 +117,14 @@ func (db *Database) CreateNote(n *entity.Note) error {
 	return err
 }
 
+// UpdateNote will update a note in the database.
 func (db *Database) UpdateNote(n *entity.Note) error {
 
 	err := db.execWithTransaction(statementUpdateNote, n.Content, n.Id, n.UserId)
 	return err
 }
 
+// GetAllNotes will fetch you a list of notes based on given userId
 func (db *Database) GetAllNotes(userId string) (*[]entity.Note, error) {
 
 	result := make([]entity.Note, 0)
@@ -144,6 +148,7 @@ func (db *Database) GetAllNotes(userId string) (*[]entity.Note, error) {
 	return &result, nil
 }
 
+// GetNote will fetch you a note based on id and userId.
 func (db *Database) GetNote(id string, userId string) (*[]entity.Note, error) {
 
 	result := make([]entity.Note, 0)
@@ -165,6 +170,7 @@ func (db *Database) GetNote(id string, userId string) (*[]entity.Note, error) {
 	return &result, nil
 }
 
+// InsertLog will insert a log into the database.
 func (db *Database) InsertLog(l *entity.Log) error {
 
 	err := db.execWithTransaction(statementInsertLog, l.Level, l.Ts, l.Path, l.Message, l.RequestID, l.Method, l.IP, l.Info)

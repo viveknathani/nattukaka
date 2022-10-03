@@ -4,14 +4,14 @@ import (
 	"context"
 
 	"github.com/gomodule/redigo/redis"
-	"github.com/viveknathani/nattukaka/repository"
+	"github.com/viveknathani/nattukaka/database"
 	"github.com/viveknathani/nattukaka/shared"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
 type Service struct {
-	Repo      repository.Repository
+	Repo      *database.Database
 	Conn      redis.Conn
 	JwtSecret []byte
 	Logger    *zap.Logger
