@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"html/template"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/viveknathani/nattukaka/entity"
@@ -58,7 +57,7 @@ func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 		MaxAge:   int(time.Hour.Seconds() * 24 * 3),
 		Path:     "/",
 		SameSite: http.SameSiteStrictMode,
-		Secure:   (os.Getenv("MODE") == "prod"),
+		Secure:   true,
 	})
 
 	if ok := sendResponse(w, "ok", http.StatusOK); ok != nil {
