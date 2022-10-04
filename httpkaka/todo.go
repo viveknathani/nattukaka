@@ -2,7 +2,6 @@ package httpkaka
 
 import (
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"net/http"
 
@@ -79,7 +78,6 @@ func (s *Server) handleTodoUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("completedAt is: ", t.CompletedAt)
 	err = s.Service.UpdateTodo(r.Context(), &entity.Todo{
 		UserId:      shared.ExtractUserID(r.Context()),
 		Id:          t.Id,
@@ -101,6 +99,7 @@ func (s *Server) handleTodoUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 	showRequestEnd(s.Service.Logger, r)
 }
+
 func (s *Server) handleTodoDelete(w http.ResponseWriter, r *http.Request) {
 
 	var t todoDeleteRequest

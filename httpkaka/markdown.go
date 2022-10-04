@@ -1,10 +1,10 @@
 package httpkaka
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -48,14 +48,13 @@ func (s *Server) serveMarkdownIndex(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func addViewPort(input []byte) []byte {
+func addViewPort(input []byte) ([]byte, error) {
 
 	const keyword = "</title>"
 	stream := string(input)
 	idx := strings.Index(stream, keyword)
 	if idx == -1 {
-		log.Print("Failed to add meta viewport")
-		return input
+		return nil, errors.New("Failed to add meta viewport")
 	}
 	end := idx + len(keyword) - 1
 	arr := make([]byte, 0)
@@ -73,21 +72,20 @@ func addViewPort(input []byte) []byte {
 		arr = append(arr, byte(stream[i]))
 	}
 
-	return arr
+	return arr, nil
 }
 
-func markdowntoHTML(source string, title string, cssFile string) []byte {
+func markdowntoHTML(source string, title string, cssFile string) ([]byte, error) {
 
 	file, err := os.Open(source)
 	if err != nil {
-		log.Print(err)
-		return []byte("")
+		return nil, err
 	}
 	defer file.Close()
 
 	stream, err := ioutil.ReadAll(file)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	params := blackfriday.HTMLRendererParameters{
@@ -103,7 +101,13 @@ func (s *Server) serveMarkdownPost(w http.ResponseWriter, r *http.Request) {
 
 	postPath := fmt.Sprintf("static/_md%s", r.URL.Path)
 	title := mux.Vars(r)["title"]
-	html := markdowntoHTML(postPath, title, "/static/styles/theme.css")
+	html, err := markdowntoHTML(postPath, title, "/static/styles/theme.css")
+	if err != nil {
+		if ok := sendServerError(w); ok != nil {
+			s.Service.Logger.Error(ok.Error(), zapReqID(r))
+		}
+		return
+	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Write(html)
 }
