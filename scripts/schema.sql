@@ -1,3 +1,6 @@
+create database nattukaka;
+\c nattukaka;
+
 -- "name" is stored as varchar to support variable length string with 
 -- no upper limit. "password" is stored as bytea to support the bcrypt implementation. 
 -- The Go implementation outputs the hash in base64 format which makes varchar an alternative

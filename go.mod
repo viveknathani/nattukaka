@@ -6,7 +6,6 @@ require github.com/gorilla/mux v1.8.0
 
 require (
 	github.com/gomodule/redigo v1.8.9
-	github.com/joho/godotenv v1.4.0
 	github.com/lib/pq v1.10.6
 	github.com/russross/blackfriday/v2 v2.1.0
 	go.uber.org/zap v1.22.0

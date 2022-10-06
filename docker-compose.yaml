@@ -1,0 +1,40 @@
+version: '3'
+services:
+  web:
+    env_file:
+      - .env
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - webnet 
+    depends_on:
+      - postgres
+      - redis
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - webnet
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - ./scripts/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - 
+        type: bind
+        source: /var/nattukaka/pgdata
+        target: /var/lib/postgresql/data  
+    ports:
+      - "5432:5432"
+    networks:
+      - webnet    
+networks:
+  webnet:
+volumes:
+  pgdata:
+
+

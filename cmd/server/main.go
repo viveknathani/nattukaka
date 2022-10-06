@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -10,7 +9,6 @@ import (
 
 	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
 	"github.com/viveknathani/nattukaka/cache"
 	"github.com/viveknathani/nattukaka/database"
 	"github.com/viveknathani/nattukaka/httpkaka"
@@ -26,13 +24,20 @@ var jwtSecret string = ""
 
 func init() {
 
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 	port = os.Getenv("PORT")
-	databaseServer = os.Getenv("DATABASE_URL")
-	redisServer = os.Getenv("REDIS_URL")
+	databaseUser := os.Getenv("DATABASE_USER")
+	databasePassword := os.Getenv("DATABASE_PASSWORD")
+	databaseHost := os.Getenv("DATABASE_HOST")
+	databasePort := os.Getenv("DATABASE_PORT")
+	databaseName := os.Getenv("DATABASE_NAME")
+	databaseServer = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", databaseUser, databasePassword, databaseHost, databasePort, databaseName)
+	redisHost := os.Getenv("REDIS_HOST")
+	redisPort := os.Getenv("REDIS_PORT")
+	redisServer = fmt.Sprintf("%s:%s", redisHost, redisPort)
 	jwtSecret = os.Getenv("JWT_SECRET")
 }
 
