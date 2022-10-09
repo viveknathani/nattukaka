@@ -13,6 +13,7 @@ nattukaka is a minmialistic web server that runs my stuff on the internet. It is
 - [x] handle my notes 
 - [x] send me the top 10 hacker news stories everyday at 7:00AM IST. 
 - [ ] store and provide insights to my financial data 
+- [ ] enable tagging on all posts (notes, blogs, etc.)
 
 ## requirements
 
