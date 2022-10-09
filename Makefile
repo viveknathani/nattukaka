@@ -6,4 +6,5 @@ test:
 	go test -v ./...
 
 run:
+	supercronic scripts/crontab > cron_logs.txt
 	./bin/nattukaka
