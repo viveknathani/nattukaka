@@ -2,7 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/viveknathani/nattukaka)](https://goreportcard.com/report/github.com/viveknathani/nattukaka) 
 
-nattukaka is a minmialistic web server that runs my stuff on the internet. It is designed in a highly personalized manner but you can easily fork this and run your own version of nattuaka. It currently runs on the cheapest VPS available on [Linode](https://www.linode.com). 
+nattukaka is a minmialistic web server that runs my stuff on the internet. It is designed in a highly personalized manner but you can easily fork this and run your own version. It currently runs on the cheapest VPS available on [Linode](https://www.linode.com). 
 
 ## features
 
