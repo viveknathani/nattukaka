@@ -27,6 +27,8 @@ func (service *Service) GetAllPosts(ctx context.Context, directory string) ([]en
 		service.Logger.Error(err.Error(), zapReqID(ctx))
 		return nil, ErrNoPostList
 	}
+
+	postType := strings.TrimSuffix(strings.TrimPrefix(path, "static/_md/"), "/")
 	for _, entry := range entries {
 
 		title := entry.Name()
@@ -38,6 +40,7 @@ func (service *Service) GetAllPosts(ctx context.Context, directory string) ([]en
 		output := string(out)
 		output = output[1:11] // output is `"yyyy-mm-dd..."`, we want just `yyyy-mm-dd`
 		result = append(result, entity.Post{
+			Type:  postType,
 			Title: title,
 			Date:  output,
 		})

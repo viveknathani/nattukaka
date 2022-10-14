@@ -9,7 +9,7 @@
 <body>
     <h3>posts</h3>
     {{range .PostList}}
-    <p>{{.Date}} - <a href="/blog/{{.Title}}">{{.Title}}</a></p>
+    <p>{{.Date}} - <a href="/{{.Type}}/{{.Title}}">{{.Title}}</a></p>
     {{end}}
 </body>
 </html>
