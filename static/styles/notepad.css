@@ -1,5 +1,5 @@
 body {
-    font-family: 'Consolas';
+    font-family: 'Consolas', Helvetica, sans-serif;
     background-color: rgb(29, 29, 29);
     color: rgb(255, 255, 255);
 }
@@ -9,7 +9,7 @@ textarea {
     background-color: rgb(29, 29, 29);
     border: none;
     color: white;
-    font-family: 'Consolas';
+    font-family: 'Consolas', Helvetica, sans-serif;
     width: 100%;
 }
 
