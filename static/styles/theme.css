@@ -2,6 +2,9 @@
 
 body {
     font-family: 'Inter', sans-serif;
+    background-color: #fceddc;
+    max-width: 50%;
+    margin: auto;
 }
 
 a, a:visited, a:hover, a:active {
