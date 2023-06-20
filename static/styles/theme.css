@@ -3,8 +3,6 @@
 body {
     font-family: 'Inter', sans-serif;
     background-color: #fceddc;
-    max-width: 50%;
-    margin: auto;
 }
 
 a, a:visited, a:hover, a:active {
@@ -24,4 +22,11 @@ img {
     display: block;
     margin: 0 auto;
     width: 80%;
+}
+
+@media (min-width:600px) {
+    body {
+        max-width: 50%;
+        margin: auto;
+    }
 }
