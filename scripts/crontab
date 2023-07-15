@@ -1,1 +1,0 @@
-30 1 * * * /usr/src/app/bin/reporter >> /usr/src/app/logs_report.txt 2>&1
