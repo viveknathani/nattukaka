@@ -1,5 +1,7 @@
 # nattukaka
 
+UPDATE: I am sunsetting this project. I have come to the conclusion that Go is not a good fit for nattukaka's usecase. This repository is just some over engineered bullshit at this point. It served me well. But I am growing out of it now. Goodbye!
+
 [![Go Report Card](https://goreportcard.com/badge/github.com/viveknathani/nattukaka)](https://goreportcard.com/report/github.com/viveknathani/nattukaka) 
 
 nattukaka is a minmialistic web server that runs my stuff on the internet. It is designed in a highly personalized manner but you can easily fork this and run your own version. It currently runs on the cheapest VPS available on [Linode](https://www.linode.com). 
