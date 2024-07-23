@@ -4,4 +4,5 @@ package app
 func (app *App) SetupRoutes() {
 	app.Fiber.Get("/", app.HomeController)
 	app.Fiber.Post("/api/v1/auth/signup", app.SignupController)
+	app.Fiber.Post("/api/v1/auth/sendOTP", app.SendOTPController)
 }
