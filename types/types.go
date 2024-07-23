@@ -19,9 +19,10 @@ type VerifyOTPRequest struct {
 
 // User represents a user profile
 type User struct {
-	ID    int    `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	ID       int    `json:"id,omitempty"`
+	PublicID string `json:"publicId,omitempty"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
 }
 
 // VerifyOTPResponse represents the response body for response of verify OTP

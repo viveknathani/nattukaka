@@ -15,26 +15,36 @@ const (
 )
 
 // Signup creates a user in the database
-func (srv *Service) Signup(user *types.User) (int, string) {
-	if user == nil {
-		return httpCodeInternalServerError, "nil check fail!"
+func (srv *Service) Signup(req *types.SignupRequest) (int, string) {
+	if req == nil {
+		return httpCodeInternalServerError, "nil check fail"
 	}
 
-	existingUser, err := srv.Db.GetUserByEmail(user.Email)
+	existingUser, err := srv.Db.GetUserByEmail(req.Email)
 	if err != nil {
 		srv.Logger.Error(err.Error())
-		return httpCodeInternalServerError, "something went wrong!"
+		return httpCodeInternalServerError, "something went wrong"
 	}
 
 	if existingUser != nil {
-		return httpCodeBadRequest, "user exists!"
+		return httpCodeBadRequest, "user exists"
 	}
 
-	if !utils.IsValidEmail(user.Email) {
-		return httpCodeBadRequest, "invalid email!"
+	if !utils.IsValidEmail(req.Email) {
+		return httpCodeBadRequest, "invalid email"
 	}
 
-	err = srv.Db.InsertUser(user)
+	publicID, err := utils.GeneratePublicId("user")
+	if err != nil {
+		srv.Logger.Error(err.Error())
+		return httpCodeInternalServerError, "something went wrong"
+	}
+
+	err = srv.Db.InsertUser(&types.User{
+		Name:     req.Name,
+		Email:    req.Email,
+		PublicID: publicID,
+	})
 	if err != nil {
 		srv.Logger.Error(err.Error())
 		return httpCodeInternalServerError, "something went wrong!"
@@ -45,17 +55,17 @@ func (srv *Service) Signup(user *types.User) (int, string) {
 // SendOTP sends an OTP on your email!
 func (srv *Service) SendOTP(request *types.SendOTPRequest) (int, string) {
 	if request == nil {
-		return httpCodeInternalServerError, "nil check fail!"
+		return httpCodeInternalServerError, "nil check fail"
 	}
 
 	// Pull existing user
 	existingUser, err := srv.Db.GetUserByEmail(request.Email)
 	if err != nil {
 		srv.Logger.Error(err.Error())
-		return httpCodeInternalServerError, "something went wrong!"
+		return httpCodeInternalServerError, "something went wrong"
 	}
 	if existingUser == nil {
-		return httpCodeBadRequest, "user does not exist!"
+		return httpCodeBadRequest, "user does not exist"
 	}
 
 	// Generate and store OTP in Redis
@@ -63,17 +73,17 @@ func (srv *Service) SendOTP(request *types.SendOTPRequest) (int, string) {
 	_, err = cache.Set(srv.Cache, prefixRedisKeyUserOTP+strconv.Itoa((existingUser.ID)), []byte(otp))
 	if err != nil {
 		srv.Logger.Error(err.Error())
-		return httpCodeInternalServerError, "something went wrong!"
+		return httpCodeInternalServerError, "something went wrong"
 	}
 
 	// Send OTP via email
 	err = utils.SendEmail(existingUser.Email, "Your OTP is here!", "Your OTP for logging into nattukaka is: "+otp)
 	if err != nil {
 		srv.Logger.Error(err.Error())
-		return httpCodeInternalServerError, "something went wrong!"
+		return httpCodeInternalServerError, "something went wrong"
 	}
 
-	return httpCodeOk, "OTP sent!"
+	return httpCodeOk, "OTP sent"
 }
 
 // createToken will create a new JWT with id as payload and an expiry time
@@ -89,36 +99,36 @@ func (srv *Service) createToken(email string) (string, error) {
 // VerifyOTP verifies your OTP!
 func (srv *Service) VerifyOTP(request *types.VerifyOTPRequest) (int, string, *types.VerifyOTPResponse) {
 	if request == nil {
-		return httpCodeInternalServerError, "nil check fail!", nil
+		return httpCodeInternalServerError, "nil check fail", nil
 	}
 
 	// Pull existing user
 	existingUser, err := srv.Db.GetUserByEmail(request.Email)
 	if err != nil {
 		srv.Logger.Error(err.Error())
-		return httpCodeInternalServerError, "something went wrong!", nil
+		return httpCodeInternalServerError, "something went wrong", nil
 	}
 	if existingUser == nil {
-		return httpCodeBadRequest, "user does not exist!", nil
+		return httpCodeBadRequest, "user does not exist", nil
 	}
 
 	correctOTPAsBytes, err := cache.Get(srv.Cache, prefixRedisKeyUserOTP+strconv.Itoa((existingUser.ID)))
 	if err != nil {
 		srv.Logger.Error(err.Error())
-		return httpCodeInternalServerError, "something went wrong!", nil
+		return httpCodeInternalServerError, "something went wrong", nil
 	}
 
 	if string(correctOTPAsBytes) != request.OTP {
-		return httpCodeBadRequest, "incorrect OTP!", nil
+		return httpCodeBadRequest, "incorrect OTP", nil
 	}
 
 	token, err := srv.createToken(existingUser.Email)
 	if err != nil {
 		srv.Logger.Error(err.Error())
-		return httpCodeInternalServerError, "something went wrong!", nil
+		return httpCodeInternalServerError, "something went wrong", nil
 	}
 
-	return httpCodeOk, "OTP verified!", &types.VerifyOTPResponse{
+	return httpCodeOk, "OTP verified", &types.VerifyOTPResponse{
 		User:      *existingUser,
 		AuthToken: token,
 	}
@@ -130,11 +140,11 @@ func (srv *Service) GetProfile(email string) (int, string, *types.User) {
 	existingUser, err := srv.Db.GetUserByEmail(email)
 	if err != nil {
 		srv.Logger.Error(err.Error())
-		return httpCodeInternalServerError, "something went wrong!", nil
+		return httpCodeInternalServerError, "something went wrong", nil
 	}
 
 	if existingUser == nil {
-		return httpCodeBadRequest, "user does not exist!", nil
+		return httpCodeBadRequest, "user does not exist", nil
 	}
 
 	return httpCodeOk, "", existingUser

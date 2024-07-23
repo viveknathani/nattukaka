@@ -8,13 +8,13 @@ import (
 
 // SQL statements as constants
 const (
-	statementInsertUser        = `insert into users (name, email) values ($1, $2) returning id`
-	statementSelectUserByEmail = `select id, name from users where email = $1`
+	statementInsertUser        = `insert into users (name, email, public_id) values ($1, $2, $3) returning id`
+	statementSelectUserByEmail = `select id, name, email, public_id from users where email = $1`
 )
 
 // InsertUser inserts a new user into the database
 func (db *Database) InsertUser(u *types.User) error {
-	err := db.execWithTransaction(statementInsertUser, u.Name, u.Email)
+	err := db.execWithTransaction(statementInsertUser, u.Name, u.Email, u.PublicID)
 	return err
 }
 
@@ -25,7 +25,7 @@ func (db *Database) GetUserByEmail(email string) (*types.User, error) {
 	err := db.query(statementSelectUserByEmail, func(rows *sql.Rows) error {
 		// We iterate only once since we are interested in the first occurence
 		if rows.Next() {
-			err := rows.Scan(&u.ID, &u.Name, &u.Email)
+			err := rows.Scan(&u.ID, &u.Name, &u.Email, &u.PublicID)
 			if err != nil {
 				return err
 			}

@@ -1,5 +1,6 @@
 package service
 
+// TODO: REMOVE THIS. MOVE TO FIBER.
 const (
 	httpCodeOk                  = 200
 	httpCodeCreated             = 201
