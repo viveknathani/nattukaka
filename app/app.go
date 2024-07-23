@@ -11,7 +11,7 @@ type App struct {
 	Service *service.Service
 }
 
-func sendResponse(c *fiber.Ctx, statusCode int, message string, data *fiber.Map) error {
+func sendResponse(c *fiber.Ctx, statusCode int, message string, data interface{}) error {
 	response := fiber.Map{
 		"message": nil,
 		"data":    data,
