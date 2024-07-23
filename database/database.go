@@ -94,3 +94,9 @@ func (db *Database) execWithTransaction(prepared string, args ...interface{}) er
 
 	return nil
 }
+
+// Exec - Run this to execute any commands without returning
+// any rows - such as running migrations
+func (db *Database) Exec(query string) (sql.Result, error) {
+	return db.pool.Exec(query)
+}

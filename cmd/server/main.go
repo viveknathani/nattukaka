@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -90,7 +89,23 @@ func main() {
 	// Setup logger and database
 	logger := getLogger()
 	db := getDatabase()
+	logger.Info("connected to database!")
 	memory, memoryConn := getCache()
+	logger.Info("connected to cache!")
+
+	// Run database migrations
+	// Read the schema.sql file
+	schema, err := os.ReadFile("./database/schema.sql")
+	if err != nil {
+		logger.Fatal("Failed to read schema file: %v", zap.Error(err))
+	}
+
+	// Execute schema.sql
+	_, err = db.Exec(string(schema))
+	if err != nil {
+		logger.Fatal("Failed to execute schema: %v", zap.Error(err))
+	}
+	logger.Info("ran database migrations!")
 
 	// Init application
 	fiberApp := fiber.New()
@@ -106,15 +121,21 @@ func main() {
 	application.SetupRoutes()
 
 	// Start server
-	application.Fiber.Listen(":" + port)
+	go func() {
+		logger.Info("starting server...")
+		err = application.Fiber.Listen(":" + port)
+		if err != nil {
+			logger.Fatal("server cannot start!", zap.Error(err))
+		}
+	}()
 
 	// Wait for signal
 	<-done
-	shutdown(application, db, memory)
+	shutdown(logger, application, db, memory)
 }
 
-func shutdown(application *app.App, db *database.Database, memory *cache.Cache) {
-	log.Print("shutting down server...")
+func shutdown(logger *zap.Logger, application *app.App, db *database.Database, memory *cache.Cache) {
+	logger.Info("shutting down server...")
 
 	err := application.Service.Cache.Close()
 	if err != nil {
@@ -132,4 +153,5 @@ func shutdown(application *app.App, db *database.Database, memory *cache.Cache) 
 	}
 
 	application.Fiber.Shutdown()
+	logger.Info("goodbye!")
 }
