@@ -18,9 +18,23 @@ const (
 )
 
 // InsertVolume inserts a new volume into the database
-func (db *Database) InsertVolume(volume *types.Volume) error {
-	_, err := db.pool.Exec(statementInsertVolume, volume.PublicID)
-	return err
+func (db *Database) InsertVolume(publicID string) (int, error) {
+	var insertedID = -1
+
+	err := db.query(statementInsertVolume, func(rows *sql.Rows) error {
+		if rows.Next() {
+			err := rows.Scan(&insertedID)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	}, publicID)
+	if err != nil {
+		return -1, err
+	}
+
+	return insertedID, err
 }
 
 // GetVolumeByID retrieves a volume by its public ID

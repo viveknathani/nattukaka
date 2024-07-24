@@ -1,12 +1,24 @@
 package service
 
 import (
+	"fmt"
+
+	"github.com/gofiber/fiber/v2"
 	"github.com/viveknathani/nattukaka/types"
+	"github.com/viveknathani/nattukaka/utils"
 )
 
 // CreateVolume creates a new volume
-func (srv *Service) CreateVolume(publicID string) error {
-	return srv.Db.InsertVolume(&types.Volume{PublicID: publicID})
+func (srv *Service) CreateVolume() (int, string, *types.Volume) {
+	publicID, err := utils.GeneratePublicId("volume")
+	if err != nil {
+		return fiber.StatusInternalServerError, err.Error(), nil
+	}
+	id, err := srv.Db.InsertVolume(publicID)
+	return fiber.StatusCreated, "", &types.Volume{
+		ID:       id,
+		PublicID: publicID,
+	}
 }
 
 // AttachVolumeToService attaches a volume to a service
@@ -21,6 +33,7 @@ func (srv *Service) AttachVolumeToService(servicePublicID, volumePublicID string
 		return err
 	}
 
+	fmt.Println(service, volume)
 	return srv.Db.AttachVolumeToService(service.ID, volume.ID)
 }
 

@@ -20,7 +20,7 @@ func (app *App) SetupRoutes() {
 	app.Fiber.Post("/api/v1/volumes", app.verifyTokeMiddleware, app.CreateVolumeController)
 	app.Fiber.Get("/api/v1/volumes/workspaces/:workspaceID", app.verifyTokeMiddleware, app.GetVolumesByWorkspaceController)
 	app.Fiber.Get("/api/v1/volumes/:volumeID", app.verifyTokeMiddleware, app.GetVolumeByIDController)
-	app.Fiber.Post("/api/v1/volumes/attach/:serviceID", app.verifyTokeMiddleware, app.AttachVolumeToServiceController)
-	app.Fiber.Post("/api/v1/volumes/detach/:serviceID", app.verifyTokeMiddleware, app.DeleteServiceController)
-	app.Fiber.Delete("/api/v1/volumes/:volumeID", app.verifyTokeMiddleware, app.DeleteServiceController)
+	app.Fiber.Post("/api/v1/volumes/attach/:volumeID/:serviceID", app.verifyTokeMiddleware, app.AttachVolumeToServiceController)
+	app.Fiber.Post("/api/v1/volumes/detach/:volumeID/:serviceID", app.verifyTokeMiddleware, app.DetachVolumeFromServiceController)
+	app.Fiber.Delete("/api/v1/volumes/:volumeID", app.verifyTokeMiddleware, app.DeleteVolumeController)
 }

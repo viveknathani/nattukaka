@@ -2,31 +2,22 @@ package app
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/viveknathani/nattukaka/types"
 )
 
 // CreateVolumeController handles creating a new volume
 func (app *App) CreateVolumeController(c *fiber.Ctx) error {
-	var req types.Volume
-	if err := c.BodyParser(&req); err != nil {
-		return sendResponse(c, fiber.StatusBadRequest, "cannot parse json", nil)
-	}
-
-	err := app.Service.CreateVolume(req.PublicID)
-	if err != nil {
-		return sendResponse(c, fiber.StatusInternalServerError, "something went wrong", nil)
-	}
-
-	return sendResponse(c, fiber.StatusCreated, "volume created", nil)
+	code, message, data := app.Service.CreateVolume()
+	return sendResponse(c, code, message, data)
 }
 
 // AttachVolumeToServiceController handles attaching a volume to a service
 func (app *App) AttachVolumeToServiceController(c *fiber.Ctx) error {
 	serviceID := c.Params("serviceID")
-	volumeID := c.Query("volumeID")
+	volumeID := c.Params("volumeID")
 
 	err := app.Service.AttachVolumeToService(serviceID, volumeID)
 	if err != nil {
+		app.Service.Logger.Error(err.Error())
 		return sendResponse(c, fiber.StatusInternalServerError, "something went wrong", nil)
 	}
 
