@@ -11,4 +11,5 @@ func (app *App) SetupRoutes() {
 	app.Fiber.Post("/api/v1/workspaces", app.verifyTokeMiddleware, app.CreateWorkspaceController)
 	app.Fiber.Get("/api/v1/workspaces/:workspaceID/users", app.verifyTokeMiddleware, app.GetWorkspaceUsersController)
 	app.Fiber.Delete("/api/v1/workspaces/:workspaceID", app.verifyTokeMiddleware, app.DeleteWorkspaceController)
+	app.Fiber.Get("/api/v1/instanceTypes", app.GetAllInstanceTypesController)
 }

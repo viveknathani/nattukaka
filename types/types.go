@@ -20,7 +20,7 @@ type VerifyOTPRequest struct {
 // User represents a user profile
 type User struct {
 	ID       int    `json:"id,omitempty"`
-	PublicID string `json:"id,omitempty"`
+	PublicID string `json:"publicId,omitempty"`
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 }
@@ -50,4 +50,14 @@ type WorkspaceUser struct {
 // CreateWorkspaceRequest represents the request body for creating a workspace
 type CreateWorkspaceRequest struct {
 	Name string `json:"name"`
+}
+
+// InstanceType represents an instance type
+type InstanceType struct {
+	ID       int     `json:"id"`
+	PublicID string  `json:"publicId"`
+	Name     string  `json:"name"`
+	CPU      float64 `json:"cpu"`
+	Memory   float64 `json:"memory"`
+	Disk     float64 `json:"disk"`
 }
