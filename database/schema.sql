@@ -17,8 +17,8 @@ create table if not exists workspaces (
 create table if not exists workspace_users (
     id serial primary key,
     public_id varchar(255) unique not null,
-    workspace_id integer not null references workspaces(id),
-    user_id integer not null references users(id),
+    workspace_id integer not null references workspaces(id) on delete cascade,
+    user_id integer not null references users(id) on delete cascade,
     role varchar(255) not null
 );
 
@@ -40,8 +40,8 @@ create table if not exists services (
     status varchar(255) not null,
     type varchar(255) not null,
     runtime varchar(255),
-    workspace_id integer not null references workspaces(id),
-    created_by integer not null references users(id),
+    workspace_id integer not null references workspaces(id) on delete cascade,
+    created_by integer not null references users(id) on delete cascade,
     last_deployed_at timestamp,
     created_at timestamp default current_timestamp,
     instance_type_id integer not null references instance_types(id),
@@ -53,7 +53,7 @@ create table if not exists services (
 create table if not exists web_services (
     id serial primary key,
     public_id varchar(255) unique not null,
-    service_id integer not null references services(id),
+    service_id integer not null references services(id) on delete cascade,
     repository varchar(255),
     branch varchar(255),
     root_directory varchar(255),
@@ -68,7 +68,7 @@ create table if not exists web_services (
 create table if not exists database_services (
     id serial primary key,
     public_id varchar(255) unique not null,
-    service_id integer not null references services(id)
+    service_id integer not null references services(id) on delete cascade
 );
 
 -- volumes table
@@ -79,8 +79,8 @@ create table if not exists volumes (
 
 -- service_volumes table
 create table if not exists service_volumes (
-    service_id integer not null references services(id),
-    volume_id integer not null references volumes(id),
+    service_id integer not null references services(id) on delete cascade,
+    volume_id integer not null references volumes(id) on delete cascade,
     primary key (service_id, volume_id)
 );
 
@@ -88,7 +88,7 @@ create table if not exists service_volumes (
 create table if not exists deploys (
     id serial primary key,
     public_id varchar(255) unique not null,
-    service_id integer not null references services(id),
+    service_id integer not null references services(id) on delete cascade,
     status varchar(50) not null,
     commit varchar(255),
     image varchar(255)

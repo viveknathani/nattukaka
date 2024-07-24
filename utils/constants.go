@@ -15,6 +15,9 @@ const (
 	// UserRoleAdmin ...
 	UserRoleAdmin = "ADMIN"
 
+	// PageSize ...
+	PageSize = 10
+
 	// ServiceStatusCreated - when you have just created a service
 	ServiceStatusCreated = "CREATED"
 

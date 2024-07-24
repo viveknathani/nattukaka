@@ -13,7 +13,7 @@ const (
 	statementInsertWebService          = `insert into web_services (public_id, service_id, repository, branch, root_directory, build_command, pre_deploy_command, start_command, health_check_path, environment) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 	statementInsertDatabaseService     = `insert into database_services (public_id, service_id) values ($1, $2)`
 	statementSelectServiceByID         = `select id, public_id, name, status, type, runtime, workspace_id, created_by, last_deployed_at, created_at, instance_type_id, internal_url, external_url from services where public_id = $1`
-	statementSelectServicesByWorkspace = `select id, public_id, name, status, type, runtime, workspace_id, created_by, last_deployed_at, created_at, instance_type_id, internal_url, external_url from services where workspace_id = $1 limit 10 offset $2`
+	statementSelectServicesByWorkspace = `select id, public_id, name, status, type, runtime, workspace_id, created_by, last_deployed_at, created_at, instance_type_id, internal_url, external_url from services where workspace_id = $1 limit $2 offset $3`
 	statementUpdateService             = `update services set name = $1 where public_id = $2`
 	statementUpdateWebService          = `update web_services set repository = $1, branch = $2, root_directory = $3, build_command = $4, pre_deploy_command = $5, start_command = $6, health_check_path = $7, environment = $8 where public_id = $9`
 	statementDeleteService             = `delete from services where public_id = $1`
@@ -25,9 +25,22 @@ const (
 
 // InsertService inserts a new service into the database
 func (db *Database) InsertService(service *types.Service) (int, error) {
-	var id int
-	err := db.execWithTransaction(statementInsertService, &id, service.PublicID, service.Name, service.Status, service.Type, service.Runtime, service.WorkspaceID, service.CreatedBy, service.InstanceTypeID, service.InternalURL, service.ExternalURL)
-	return id, err
+	var insertedID = -1
+
+	err := db.query(statementInsertService, func(rows *sql.Rows) error {
+		if rows.Next() {
+			err := rows.Scan(&insertedID)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	}, service.PublicID, service.Name, service.Status, service.Type, service.Runtime, service.WorkspaceID, service.CreatedBy, service.InstanceTypeID, service.InternalURL, service.ExternalURL)
+	if err != nil {
+		return -1, err
+	}
+
+	return insertedID, err
 }
 
 // InsertWebService inserts a new web service into the database
@@ -59,7 +72,7 @@ func (db *Database) GetServiceByID(publicID string) (*types.Service, error) {
 }
 
 // GetServicesByWorkspace fetches all services in a workspace, paginated
-func (db *Database) GetServicesByWorkspace(workspaceID int, offset int) ([]types.Service, error) {
+func (db *Database) GetServicesByWorkspace(workspaceID int, limit int, offset int) ([]types.Service, error) {
 	var services []types.Service
 	err := db.query(statementSelectServicesByWorkspace, func(rows *sql.Rows) error {
 		for rows.Next() {
@@ -71,7 +84,7 @@ func (db *Database) GetServicesByWorkspace(workspaceID int, offset int) ([]types
 			services = append(services, service)
 		}
 		return nil
-	}, workspaceID, offset)
+	}, workspaceID, limit, offset)
 	return services, err
 }
 
@@ -87,20 +100,7 @@ func (db *Database) UpdateWebService(webService *types.WebService) error {
 
 // DeleteService deletes a service from the database
 func (db *Database) DeleteService(publicID string) error {
-	service, err := db.GetServiceByID(publicID)
-	if err != nil {
-		return err
-	}
-	err = db.execWithTransaction(statementDeleteService, publicID)
-	if err != nil {
-		return err
-	}
-	if service.Type == "WEB" {
-		err = db.execWithTransaction(statementDeleteWebService, service.ID)
-	} else if service.Type == "DATABASE" {
-		err = db.execWithTransaction(statementDeleteDatabaseService, service.ID)
-	}
-	return err
+	return db.execWithTransaction(statementDeleteService, publicID)
 }
 
 // UpdateServiceStatus updates the status of a service

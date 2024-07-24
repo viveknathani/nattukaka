@@ -66,9 +66,10 @@ type InstanceType struct {
 
 // CreateServiceRequest represents a request to create a new service
 type CreateServiceRequest struct {
-	Base     *Service         `json:"base"`
-	Web      *WebService      `json:"web,omitempty"`
-	Database *DatabaseService `json:"database,omitempty"`
+	WorkspaceID string           `json:"workspaceId"`
+	Base        *Service         `json:"base"`
+	Web         *WebService      `json:"web,omitempty"`
+	Database    *DatabaseService `json:"database,omitempty"`
 }
 
 // UpdateServiceRequest represents a request to update an existing service
@@ -80,19 +81,19 @@ type UpdateServiceRequest struct {
 
 // Service represents a service entity
 type Service struct {
-	ID             int       `json:"-"`                        // internal ID, not exported
-	PublicID       string    `json:"publicId"`                 // public ID of the service
-	Name           string    `json:"name"`                     // name of the service
-	Status         string    `json:"status"`                   // status of the service
-	Type           string    `json:"type"`                     // type of the service (WEB or DATABASE)
-	Runtime        string    `json:"runtime"`                  // runtime of the service
-	WorkspaceID    int       `json:"workspaceId"`              // ID of the workspace the service belongs to
-	CreatedBy      int       `json:"createdBy"`                // ID of the user who created the service
-	LastDeployedAt time.Time `json:"lastDeployedAt,omitempty"` // last deployed timestamp
-	CreatedAt      time.Time `json:"createdAt"`                // creation timestamp
-	InstanceTypeID int       `json:"instanceTypeId"`           // ID of the instance type
-	InternalURL    string    `json:"internalUrl,omitempty"`    // internal URL of the service
-	ExternalURL    string    `json:"externalUrl,omitempty"`    // external URL of the service
+	ID             int        `json:"-"`                        // internal ID, not exported
+	PublicID       string     `json:"publicId"`                 // public ID of the service
+	Name           string     `json:"name"`                     // name of the service
+	Status         string     `json:"status"`                   // status of the service
+	Type           string     `json:"type"`                     // type of the service (WEB or DATABASE)
+	Runtime        string     `json:"runtime"`                  // runtime of the service
+	WorkspaceID    int        `json:"workspaceId"`              // ID of the workspace the service belongs to
+	CreatedBy      int        `json:"createdBy"`                // ID of the user who created the service
+	LastDeployedAt *time.Time `json:"lastDeployedAt,omitempty"` // last deployed timestamp
+	CreatedAt      *time.Time `json:"createdAt"`                // creation timestamp
+	InstanceTypeID int        `json:"instanceTypeId"`           // ID of the instance type
+	InternalURL    string     `json:"internalUrl,omitempty"`    // internal URL of the service
+	ExternalURL    string     `json:"externalUrl,omitempty"`    // external URL of the service
 }
 
 // WebService represents a web service entity
