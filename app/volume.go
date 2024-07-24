@@ -53,19 +53,6 @@ func (app *App) GetVolumeByIDController(c *fiber.Ctx) error {
 	return sendResponse(c, fiber.StatusOK, "", volume)
 }
 
-// GetVolumesByWorkspaceController retrieves all volumes for a workspace
-func (app *App) GetVolumesByWorkspaceController(c *fiber.Ctx) error {
-	// workspaceID := c.Params("volumeID")
-	// page := c.Query("page", "1")
-
-	volumes, err := app.Service.GetVolumesByWorkspace(0, 0)
-	if err != nil {
-		return sendResponse(c, fiber.StatusInternalServerError, "something went wrong", nil)
-	}
-
-	return sendResponse(c, fiber.StatusOK, "", volumes)
-}
-
 // DeleteVolumeController handles deleting a volume
 func (app *App) DeleteVolumeController(c *fiber.Ctx) error {
 	publicID := c.Params("volumeID")

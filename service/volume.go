@@ -57,11 +57,6 @@ func (srv *Service) GetVolumeByID(publicID string) (*types.Volume, error) {
 	return srv.Db.GetVolumeByID(publicID)
 }
 
-// GetVolumesByWorkspace retrieves all volumes associated with a workspace
-func (srv *Service) GetVolumesByWorkspace(workspaceID int, page int) ([]types.Volume, error) {
-	return srv.Db.GetVolumesByWorkspace(workspaceID, page)
-}
-
 // DeleteVolume deletes a volume and its associated service volumes
 func (srv *Service) DeleteVolume(publicID string) error {
 	return srv.Db.DeleteVolume(publicID)
