@@ -11,10 +11,6 @@ import (
 	"github.com/viveknathani/nattukaka/utils"
 )
 
-const (
-	ageOfToken = time.Hour * 24 * 2
-)
-
 // Signup creates a user in the database
 func (srv *Service) Signup(req *types.SignupRequest) (int, string) {
 	if req == nil {
@@ -71,7 +67,7 @@ func (srv *Service) SendOTP(request *types.SendOTPRequest) (int, string) {
 
 	// Generate and store OTP in Redis
 	otp := strconv.Itoa(utils.GenerateRandomNumber(1000, 9999))
-	_, err = cache.Set(srv.Cache, prefixRedisKeyUserOTP+strconv.Itoa((existingUser.ID)), []byte(otp))
+	_, err = cache.Set(srv.Cache, utils.PrefixRedisKeyUserOTP+strconv.Itoa((existingUser.ID)), []byte(otp))
 	if err != nil {
 		srv.Logger.Error(err.Error())
 		return fiber.StatusInternalServerError, "something went wrong"
@@ -91,7 +87,7 @@ func (srv *Service) SendOTP(request *types.SendOTPRequest) (int, string) {
 func (srv *Service) createToken(email string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email": email,
-		"exp":   time.Now().Add(ageOfToken).Unix(),
+		"exp":   time.Now().Add(utils.AgeOfToken).Unix(),
 	})
 
 	return token.SignedString(srv.JwtSecret)
@@ -113,7 +109,7 @@ func (srv *Service) VerifyOTP(request *types.VerifyOTPRequest) (int, string, *ty
 		return fiber.StatusBadRequest, "user does not exist", nil
 	}
 
-	correctOTPAsBytes, err := cache.Get(srv.Cache, prefixRedisKeyUserOTP+strconv.Itoa((existingUser.ID)))
+	correctOTPAsBytes, err := cache.Get(srv.Cache, utils.PrefixRedisKeyUserOTP+strconv.Itoa((existingUser.ID)))
 	if err != nil {
 		srv.Logger.Error(err.Error())
 		return fiber.StatusInternalServerError, "something went wrong", nil

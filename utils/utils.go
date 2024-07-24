@@ -71,7 +71,7 @@ func GeneratePublicId(entityName string) (string, error) {
 		return "", errors.New("prefix does not exist")
 	}
 
-	randomPart, err := gonanoid.New()
+	randomPart, err := gonanoid.New(PublicIDLength)
 
 	if err != nil {
 		return "", err
