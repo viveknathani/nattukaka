@@ -19,7 +19,7 @@ fi
 cd ~/services/
 rm -rf $DIRECTORY_NAME
 mkdir -p $DIRECTORY_NAME
-cd ~/$DIRECTORY_NAME
+cd $DIRECTORY_NAME
 cp $ENV_FILE_PATH .env
 git clone https://github.com/viveknathani/teachyourselfmath.git .
 
