@@ -12,6 +12,7 @@ if [ ! -e "$ENV_FILE_PATH" ]; then
     echo "Env file does not exist for: " + $ENV_FILE_PATH
     exit 1
 else
+    echo ".env file found, proceeding!"
 fi
 
 # prepare directory
