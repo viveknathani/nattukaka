@@ -19,6 +19,7 @@ fi
 cd ~/services/
 rm -rf $DIRECTORY_NAME
 git clone https://github.com/viveknathani/vivekn.dev.git
+cd $DIRECTORY_NAME
 cp $ENV_FILE_PATH .env
 
 # docker!
