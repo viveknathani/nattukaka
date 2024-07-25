@@ -18,10 +18,8 @@ fi
 # prepare directory
 cd ~/services/
 rm -rf $DIRECTORY_NAME
-mkdir -p $DIRECTORY_NAME
-cd $DIRECTORY_NAME
+git clone https://github.com/viveknathani/teachyourselfmath.git
 cp $ENV_FILE_PATH .env
-git clone https://github.com/viveknathani/teachyourselfmath.git .
 
 # docker!
 docker build -t teachyourselfmath .
