@@ -23,5 +23,6 @@ cd $DIRECTORY_NAME
 cp $ENV_FILE_PATH .env
 
 # docker!
+docker rm $CONTAINER_NAME
 docker build -t teachyourselfmath .
 docker run -dp $PORT:$PORT --label teachyourselfmath=latest --name $CONTAINER_NAME $IMAGE_NAME

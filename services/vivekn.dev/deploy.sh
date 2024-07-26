@@ -23,5 +23,6 @@ cd $DIRECTORY_NAME
 cp $ENV_FILE_PATH .env
 
 # docker!
+docker rm $CONTAINER_NAME
 docker build -t vivekn.dev .
 docker run -dp $PORT:$PORT --label vivekn.dev=latest --name $CONTAINER_NAME $IMAGE_NAME
