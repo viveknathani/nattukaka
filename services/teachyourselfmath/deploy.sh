@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # constants
-PORT=8080
+PORT=8082
 IMAGE_NAME="teachyourselfmath"
 DIRECTORY_NAME="teachyourselfmath"
 CONTAINER_NAME="teachyourselfmath"
