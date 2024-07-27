@@ -27,7 +27,7 @@ docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
 docker build -t vivekn.dev .
 docker run -dp $PORT:$PORT --label vivekn.dev=latest \
-    --name=$CONTAINER_NAME
+    --name=$CONTAINER_NAME \
     --log-driver=loki \
     --log-opt loki-url=http://localhost:3100/loki/api/v1/push \
     --log-opt loki-external-labels=container_name=$CONTAINER_NAME \
