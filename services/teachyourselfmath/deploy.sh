@@ -31,4 +31,5 @@ docker run -dp $PORT:$PORT --label teachyourselfmath=latest \
     --log-driver=loki \
     --log-opt loki-url=http://localhost:3100/loki/api/v1/push \
     --log-opt loki-external-labels=container_name=$CONTAINER_NAME \
+    --network nattukaka-network \
     $IMAGE_NAME
