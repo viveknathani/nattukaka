@@ -1,8 +1,14 @@
 # nattukaka
 
-nattukaka is an experimental project to see if I can build a mini platform-as-a-service tool like Railway/Render for my own services. 
+To know why this project exists - check out [nattukaka.dev](https://nattukaka.dev)
 
-The objective has always been to build systems that are cool and useful. nattukaka will live up to that.
+Afte getting a VPS, we just clone this repository and run the following scripts (in order).
+
+1. [init.sh](./init.sh)
+2. [database.sh](./database.sh)
+3. [observability.sh](./observability.sh)
+4. run all the `deploy.sh` scripts for all your individual [services](./services/).
+5. done!
 
 ## license
 
