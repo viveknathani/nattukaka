@@ -5,6 +5,7 @@ sudo apt install nginx
 
 sudo mkdir -p /var/www/nattukaka.dev
 sudo cp /root/nattukaka/services/nattukaka.dev/index.html /var/www/nattukaka.dev/
+sudo cp /root/nattukaka/services/nattukaka.dev/dashboard.png /var/www/nattukaka.dev/
 sudo chmod -R 755 /var/www/nattukaka.dev
 sudo chown -R www-data:www-data /var/www/nattukaka.dev
 sudo cp ~/nattukaka/services/nattukaka.dev/nginx.conf /etc/nginx/sites-available/nattukaka.dev
