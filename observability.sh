@@ -6,7 +6,7 @@ docker run -d --name=loki -p 127.0.0.1:3100:3100 --network nattukaka-network gra
 docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
 
 docker run -d \
-  -p 127.0.0.1:9100:9100
+  -p 127.0.0.1:9100:9100 \
   --name=node_exporter \
   --network=nattukaka-network \
   --volume="/proc:/host/proc:ro" \
