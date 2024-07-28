@@ -26,7 +26,7 @@ cp $ENV_FILE_PATH .env
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
 docker build -t vivekn.dev .
-docker run -dp $PORT:$PORT --label vivekn.dev=latest \
+docker run -dp 127.0.0.1:$PORT:$PORT --label vivekn.dev=latest \
     --name=$CONTAINER_NAME \
     --log-driver=loki \
     --log-opt loki-url=http://localhost:3100/loki/api/v1/push \
