@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # constants
-PORT=8081
+PORT=8083
 IMAGE_NAME="workdiff"
 DIRECTORY_NAME="workdiff"
 CONTAINER_NAME="workdiff"
