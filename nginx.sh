@@ -17,6 +17,9 @@ sudo ln -s /etc/nginx/sites-available/teachyourselfmath /etc/nginx/sites-enabled
 sudo cp ~/nattukaka/services/vivekn.dev/nginx.conf /etc/nginx/sites-available/vivekn.dev
 sudo ln -s /etc/nginx/sites-available/vivekn.dev /etc/nginx/sites-enabled/
 
+sudo cp ~/nattukaka/services/workdiff/nginx.conf /etc/nginx/sites-available/workdiff
+sudo ln -s /etc/nginx/sites-available/workdiff /etc/nginx/sites-enabled/
+
 sudo cp ~/nattukaka/services/grafana/nginx.conf /etc/nginx/sites-available/grafana
 sudo ln -s /etc/nginx/sites-available/grafana /etc/nginx/sites-enabled/
 
