@@ -1,0 +1,14 @@
+[Unit]
+Description=nattukaka startup script
+After=network.target
+
+[Service]
+ExecStart=/home/viveknathani/nattukaka/scripts/startup.sh
+RemainAfterExit=true
+User=viveknathani
+WorkingDirectory=/home/viveknathani
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

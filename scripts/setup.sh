@@ -11,6 +11,7 @@ sudo ufw allow https
 sudo ufw enable
 sudo ufw status
 sudo apt install fail2ban
+sudo ufw allow from 192.168.1.0/24 to any port 8080:9000 proto tcp
 
 # docker
 sudo apt-get update
