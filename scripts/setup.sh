@@ -47,3 +47,14 @@ sudo apt install redis-server
 sudo vi /etc/redis/redis.conf # change -> 1) requirepass your_secure_password_here 2) bind 0.0.0.0 3) maxmemory-policy noeviction
 sudo ufw allow 6379/tcp
 sudo service redis-server restart
+
+# clickhouse
+sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
+
+ARCH=$(dpkg --print-architecture)
+echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
+sudo apt-get update
+sudo apt-get install -y clickhouse-server clickhouse-client
+sudo ufw allow 9000/tcp
+sudo ufw allow 8123/tcp
