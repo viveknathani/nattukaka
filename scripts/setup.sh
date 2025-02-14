@@ -58,3 +58,6 @@ sudo apt-get update
 sudo apt-get install -y clickhouse-server clickhouse-client
 sudo ufw allow 9000/tcp
 sudo ufw allow 8123/tcp
+
+echo "NOTE: add the backup script for sixhuman"
+
