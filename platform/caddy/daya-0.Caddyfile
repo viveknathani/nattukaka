@@ -1,16 +1,16 @@
-mymathboard.app {
-    root * /var/www/mymathboard
+daya-0.internal {
+    root * /var/www/home
     file_server
 }
 
-viveknathani.mymathboard.app {
-    reverse_proxy http://daya-0.tail3933d7.ts.net:8081
+viveknathani.internal {
+    reverse_proxy http://127.0.0.1:8081
 }
 
-teachyourselfmath.mymathboard.app {
-    reverse_proxy http://daya-0.tail3933d7.ts.net:8082
+teachyourselfmath.internal {
+    reverse_proxy http://127.0.0.1:8082
 }
 
-workdiff.mymathboard.app {
-    reverse_proxy http://daya-0.tail3933d7.ts.net:8083
+workdiff.internal {
+    reverse_proxy http://127.0.0.1:8083
 }
