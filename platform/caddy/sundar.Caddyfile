@@ -1,16 +1,16 @@
-mymathboard.app {
+nattukaka.dev {
     root * /var/www/mymathboard
     file_server
 }
 
-viveknathani.mymathboard.app {
-    reverse_proxy http://daya-0.tail3933d7.ts.net:8081
+vivekn.dev, viveknathani.nattukaka.dev {
+    reverse_proxy http://127.0.0.1:8081
 }
 
-teachyourselfmath.mymathboard.app {
-    reverse_proxy http://daya-0.tail3933d7.ts.net:8082
+teachyourselfmath.app, teachyourselfmath.nattukaka.dev {
+    reverse_proxy http://127.0.0.1:8082
 }
 
-workdiff.mymathboard.app {
-    reverse_proxy http://daya-0.tail3933d7.ts.net:8083
+workdiff.nattukaka.dev {
+    reverse_proxy http://127.0.0.1:8083
 }

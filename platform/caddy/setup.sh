@@ -1,8 +1,8 @@
 # get the latest installation commands from https://caddyserver.com/
 
 # Once done,
-sudo mkdir -p /var/www/mymathboard
-sudo nano /var/www/mymathboard/index.html
+sudo mkdir -p /var/www/nattukaka
+sudo nano /var/www/nattukaka/index.html
 # add the following to begin with
 # <!DOCTYPE html>
 # <html lang="en">
@@ -18,8 +18,8 @@ sudo nano /var/www/mymathboard/index.html
 #     <p>hello</p>
 # </body>
 # </html>
-sudo chown -R www-data:www-data /var/www/mymathboard
-sudo chmod -R 755 /var/www/mymathboard
+sudo chown -R www-data:www-data /var/www/nattukaka
+sudo chmod -R 755 /var/www/nattukaka
 
 # now, edit the caddyfile, use your own.
 
