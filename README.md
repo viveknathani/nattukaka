@@ -1,6 +1,12 @@
 # nattukaka
 
-Hey! If you are reading this, chances are that you came from [here](https://nattukaka.dev). This codebase is undergoing through *LOTS* of changes right now since I am moving to a setup that runs at my home using tools like Tailscale, and Caddy. Expect things to be broken.
+To know why this project exists - check out [nattukaka.dev](https://nattukaka.dev)
+
+After getting a VPS, we just clone this repository and run the following scripts (in order).
+ 
+1. [setup.sh](./setup.sh)
+2. [startup.sh](./startup.sh)
+3. done!
 
 ### license
 
