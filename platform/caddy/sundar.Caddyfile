@@ -14,3 +14,7 @@ teachyourselfmath.app, teachyourselfmath.nattukaka.dev {
 workdiff.nattukaka.dev {
     reverse_proxy http://127.0.0.1:8083
 }
+
+numero.vivekn.dev {
+    reverse_proxy http://127.0.0.1:8084
+}
