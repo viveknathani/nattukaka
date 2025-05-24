@@ -18,3 +18,7 @@ workdiff.nattukaka.dev {
 numero.vivekn.dev {
     reverse_proxy http://127.0.0.1:8084
 }
+
+sv.nattukaka.dev, shambhaviandvivek.com {
+    reverse_proxy http://127.0.0.1:8085
+}
