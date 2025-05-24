@@ -18,7 +18,7 @@ fi
 # prepare directory
 cd ~/services/
 rm -rf $DIRECTORY_NAME
-git clone https://github.com/viveknathani/sv.git
+git clone git@github.com:viveknathani/sv.git
 cd $DIRECTORY_NAME
 cp $ENV_FILE_PATH .env
 
