@@ -22,3 +22,7 @@ numero.vivekn.dev {
 sv.nattukaka.dev, shambhaviandvivek.com {
     reverse_proxy http://127.0.0.1:8085
 }
+
+tools.nattukaka.dev {
+    reverse_proxy http://127.0.0.1:8086
+}
