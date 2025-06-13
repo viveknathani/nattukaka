@@ -26,3 +26,7 @@ sv.nattukaka.dev, shambhaviandvivek.com {
 tools.nattukaka.dev {
     reverse_proxy http://127.0.0.1:8086
 }
+
+chat.nattukaka.dev {
+    reverse_proxy http://127.0.0.1:8087
+}
