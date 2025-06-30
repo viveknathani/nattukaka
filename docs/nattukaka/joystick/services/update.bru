@@ -1,0 +1,30 @@
+meta {
+  name: update
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/api/v1/services/{{serviceId}}
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+body:json {
+  {
+    "name": "cnc",
+    "repositoryUrl": "https://github.com/viveknathani/cnc",
+    "envVars": {
+      "x": "z"
+    },
+    "branch": "master",
+    "portMapping": [{
+      "hostPort": 8080,
+      "containerPort": 8080
+    }]
+  }
+}

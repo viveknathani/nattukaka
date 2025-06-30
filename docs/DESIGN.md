@@ -12,6 +12,11 @@ Theoretically, there can be multiple instances of the player service across mult
 
 ### db schemas
 
+`users` table
+- id
+- username
+- password
+
 `services` table
 - id
 - uuid
@@ -19,6 +24,7 @@ Theoretically, there can be multiple instances of the player service across mult
 - repository_url
 - branch
 - env_vars
+- owner_id
 - created_at
 - updated_at
 
@@ -40,6 +46,7 @@ Theoretically, there can be multiple instances of the player service across mult
 - `GET /services/:id/deployments`
 - `POST /services/:id/deployments`
 - `GET /services/:id/deployments/:id`
+- `PATCH /services/:id/deployments/:id` (only player service can call this)
 
 ### API (player)
 - buildImage
