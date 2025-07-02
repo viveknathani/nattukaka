@@ -62,3 +62,23 @@ type Service struct {
 	CreatedAt     time.Time       `json:"createdAt"     gorm:"created_at;not null"`
 	UpdatedAt     time.Time       `json:"updatedAt"     gorm:"updated_at;not null"`
 }
+
+// ServiceDeployment represents a service deployment in the system.
+type ServiceDeployment struct {
+	ID          int       `json:"id"          gorm:"id;primaryKey"`
+	UUID        string    `json:"uuid"        gorm:"type:uuid;default:uuid_generate_v4()"`
+	ServiceID   int       `json:"serviceId"   gorm:"service_id;not null"`
+	Commit      string    `json:"commit"      gorm:"commit;not null"`
+	Status      string    `json:"status"      gorm:"status;not null"`
+	ContainerID string    `json:"containerId" gorm:"container_id;not null"`
+	CreatedAt   time.Time `json:"createdAt"   gorm:"created_at;not null"`
+	UpdatedAt   time.Time `json:"updatedAt"   gorm:"updated_at;not null"`
+}
+
+// ServiceDeploymentUpdateRequest represents a service deployment update request.
+// This body can accept status and containerId as optional fields.
+// If not provided, won't update those fields.
+type ServiceDeploymentUpdateRequest struct {
+	Status      string `json:"status"`
+	ContainerID string `json:"containerId"`
+}

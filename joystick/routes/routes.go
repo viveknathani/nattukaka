@@ -14,6 +14,9 @@ func SetupRoutes(app *fiber.App, state *shared.State) {
 	serviceService := services.NewServiceService(state)
 	userController := controllers.NewUserController(userService)
 	serviceController := controllers.NewServiceController(serviceService)
+	serviceDeploymentController := controllers.NewServiceDeploymentController(
+		services.NewServiceDeploymentService(state),
+	)
 
 	authMiddleware := services.GetAuthMiddleware(userService)
 
@@ -24,4 +27,19 @@ func SetupRoutes(app *fiber.App, state *shared.State) {
 	app.Get("/api/v1/services/:serviceID", authMiddleware, serviceController.GetService)
 	app.Put("/api/v1/services/:serviceID", authMiddleware, serviceController.UpdateService)
 	app.Delete("/api/v1/services/:serviceID", authMiddleware, serviceController.DeleteService)
+	app.Post(
+		"/api/v1/services/:serviceID/deployments",
+		authMiddleware,
+		serviceDeploymentController.CreateServiceDeployment,
+	)
+	app.Get(
+		"/api/v1/services/:serviceID/deployments",
+		authMiddleware,
+		serviceDeploymentController.GetAllServiceDeployments,
+	)
+	app.Patch(
+		"/api/v1/services/:serviceID/deployments/:deploymentID",
+		authMiddleware,
+		serviceDeploymentController.UpdateServiceDeployment,
+	)
 }

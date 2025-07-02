@@ -68,4 +68,10 @@ var (
 		Code:    fiber.StatusUnauthorized,
 		Message: "invalid token",
 	}
+
+	// ErrServiceDeploymentNotFound is returned when a service deployment with the given ID is not found.
+	ErrServiceDeploymentNotFound = &JoyStickError{
+		Code:    fiber.StatusNotFound,
+		Message: "service deployment not found",
+	}
 )

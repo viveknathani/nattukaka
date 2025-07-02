@@ -1,0 +1,15 @@
+meta {
+  name: deploy
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/services/{{serviceId}}/deployments
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
