@@ -73,3 +73,12 @@ Done by the player service - randomly picking ports from a range.
 Caddy will be used to route public traffic to the running container
 
 Route format: `${service_name}.nattukaka.dev → localhost:<allocated_port>`
+
+### todo
+- player buildImage: git clone + build image + push to registry
+- player startContainer: pull image + start container
+- player stopContainer: stop container + remove container
+- player: grpc api
+- player streamLogs: stream logs
+- joystick: update caddy
+- joystick: update service deployment

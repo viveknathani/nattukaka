@@ -126,3 +126,21 @@ func (serviceService *ServiceService) DeleteService(
 	}
 	return service, nil
 }
+
+// FindNextNode returns the next node that can run a service deployment.
+// Right now, it just returns the first node in the database.
+// A more sophisticated design would involve:
+// 1. Checking if the node is online
+// 2. Checking if the node has enough resources to run the service deployment
+func (serviceService *ServiceService) FindNextNode() (*shared.Node, *shared.JoyStickError) {
+	var node *shared.Node
+	err := serviceService.state.Database.Table("nodes").
+		Order("created_at desc").
+		Limit(1).
+		First(&node).
+		Error
+	if err != nil {
+		return nil, shared.ErrInternalServerError
+	}
+	return node, nil
+}
