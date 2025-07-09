@@ -1,3 +1,6 @@
+PROTO_SRC=proto/player.proto
+PROTO_OUT=gen
+
 ifneq (,$(wildcard .env))
 	include .env
 endif
@@ -13,6 +16,9 @@ run-dev:
 
 run-production:
 	export ENV=production && ./bin/main
+
+proto:
+	protoc --go_out=$(PROTO_OUT) --go-grpc_out=$(PROTO_OUT) $(PROTO_SRC)
 
 format:
 	golines -w .

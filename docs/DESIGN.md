@@ -75,9 +75,6 @@ Caddy will be used to route public traffic to the running container
 Route format: `${service_name}.nattukaka.dev → localhost:<allocated_port>`
 
 ### todo
-- player startContainer: start container
-- player stopContainer: stop container + remove container
-- player: grpc api
 - player streamLogs: stream logs
 - joystick: update caddy
 - joystick: update service deployment

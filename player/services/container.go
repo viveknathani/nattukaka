@@ -99,10 +99,9 @@ func envMapToSlice(m map[string]string) []string {
 func (s *ContainerService) CreateAndStartContainer(
 	tag string,
 	environmentVariables map[string]string,
-) error {
+) (string, error) {
 	fmt.Println("Starting container with tag: " + tag)
 
-	fmt.Println("Container create started")
 	containerCreateResponse, err := s.dockerClient.ContainerCreate(
 		context.Background(),
 		&container.Config{
@@ -118,9 +117,8 @@ func (s *ContainerService) CreateAndStartContainer(
 	)
 	if err != nil {
 		fmt.Println("error creating container: " + err.Error())
-		return err
+		return "", err
 	}
-	fmt.Println("Container created with ID: " + containerCreateResponse.ID)
 
 	err = s.dockerClient.ContainerStart(
 		context.Background(),
@@ -129,10 +127,9 @@ func (s *ContainerService) CreateAndStartContainer(
 	)
 	if err != nil {
 		fmt.Println("error starting container: " + err.Error())
-		return err
+		return "", err
 	}
-	fmt.Println("Container started")
-	return nil
+	return containerCreateResponse.ID, nil
 }
 
 // StopContainer stops a container by ID
