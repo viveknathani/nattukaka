@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/exec"
@@ -8,16 +9,30 @@ import (
 	"strings"
 	"time"
 
+	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/client"
 	"github.com/go-git/go-git/v6"
 	"github.com/go-git/go-git/v6/plumbing"
 )
 
 // ContainerService provides methods for container management
-type ContainerService struct{}
+type ContainerService struct {
+	dockerClient *client.Client
+}
 
 // NewContainerService creates a new instance of ContainerService
-func NewContainerService() *ContainerService {
-	return &ContainerService{}
+func NewContainerService() (*ContainerService, error) {
+	dockerClient, err := client.NewClientWithOpts(
+		client.FromEnv,
+		client.WithAPIVersionNegotiation(),
+	)
+	if err != nil {
+		fmt.Println("error creating docker client: " + err.Error())
+		return nil, err
+	}
+	return &ContainerService{
+		dockerClient: dockerClient,
+	}, nil
 }
 
 // BuildImage builds a new image from the given repository URL and commit hash
@@ -70,4 +85,68 @@ func (s *ContainerService) BuildImage(
 	}
 
 	return tag, nil
+}
+
+func envMapToSlice(m map[string]string) []string {
+	env := make([]string, 0, len(m))
+	for k, v := range m {
+		env = append(env, fmt.Sprintf("%s=%s", k, v))
+	}
+	return env
+}
+
+// CreateAndStartContainer creates and starts a container from the given image
+func (s *ContainerService) CreateAndStartContainer(
+	tag string,
+	environmentVariables map[string]string,
+) error {
+	fmt.Println("Starting container with tag: " + tag)
+
+	fmt.Println("Container create started")
+	containerCreateResponse, err := s.dockerClient.ContainerCreate(
+		context.Background(),
+		&container.Config{
+			Image: tag,
+			Env:   envMapToSlice(environmentVariables),
+		},
+		&container.HostConfig{
+			NetworkMode: "host",
+		},
+		nil,
+		nil,
+		"",
+	)
+	if err != nil {
+		fmt.Println("error creating container: " + err.Error())
+		return err
+	}
+	fmt.Println("Container created with ID: " + containerCreateResponse.ID)
+
+	err = s.dockerClient.ContainerStart(
+		context.Background(),
+		containerCreateResponse.ID,
+		container.StartOptions{},
+	)
+	if err != nil {
+		fmt.Println("error starting container: " + err.Error())
+		return err
+	}
+	fmt.Println("Container started")
+	return nil
+}
+
+// StopContainer stops a container by ID
+func (s *ContainerService) StopContainer(
+	containerID string,
+) error {
+	s.dockerClient.ContainerStop(context.Background(), containerID, container.StopOptions{})
+	return nil
+}
+
+// RemoveContainer removes a container by ID
+func (s *ContainerService) RemoveContainer(
+	containerID string,
+) error {
+	s.dockerClient.ContainerRemove(context.Background(), containerID, container.RemoveOptions{})
+	return nil
 }

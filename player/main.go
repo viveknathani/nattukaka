@@ -1,19 +1,9 @@
 package main
 
-import "player/services"
+import (
+	"fmt"
+)
 
 func main() {
-	containerService := services.NewContainerService()
-
-	result, err := containerService.BuildImage(
-		"tym",
-		"https://github.com/viveknathani/teachyourselfmath",
-		"master",
-		"HEAD",
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	println(result)
+	fmt.Println("Hello World")
 }
