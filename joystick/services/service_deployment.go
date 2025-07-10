@@ -1,7 +1,9 @@
 package services
 
 import (
+	"joystick/caddyadmin"
 	"joystick/shared"
+	"strings"
 	"time"
 
 	"github.com/go-git/go-git/v6"
@@ -135,4 +137,20 @@ func (serviceDeploymentService *ServiceDeploymentService) getLatestCommitHash(
 		"error getting latest commit hash: " + "no ref found for branch " + branch,
 	)
 	return "", shared.ErrInternalServerError
+}
+
+// AddOrUpdateRoute updates a route in caddy.
+func (serviceDeploymentService *ServiceDeploymentService) AddOrUpdateRoute(
+	id string,
+	hosts []string,
+	upstream string,
+) error {
+	_, err := caddyadmin.GetRoute(id)
+	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			return caddyadmin.AddRoute(id, hosts, upstream)
+		}
+		return err
+	}
+	return caddyadmin.UpdateRoute(id, hosts, upstream)
 }

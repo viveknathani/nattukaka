@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"player/gen"
 	"syscall"
 
 	"joystick/database"
@@ -16,8 +15,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	"gorm.io/gorm"
 )
 
@@ -41,13 +38,6 @@ func connectToDatabaseAndRunMigrations() *gorm.DB {
 }
 
 func main() {
-	grpcClient, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		log.Fatal("failed to connect to player service: ", err)
-	}
-	defer grpcClient.Close()
-
-	gen.NewPlayerServiceClient(grpcClient)
 	// Use .env file in development, and the process enviroment in production
 	loadEnviromentVariables()
 

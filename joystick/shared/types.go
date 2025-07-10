@@ -86,10 +86,10 @@ type ServiceDeploymentUpdateRequest struct {
 
 // Node represents a node in the system.
 type Node struct {
-	ID        int       `json:"id"          gorm:"id;primaryKey"`
-	UUID      string    `json:"uuid"        gorm:"type:uuid;default:uuid_generate_v4()"`
-	Name      string    `json:"name"        gorm:"name;not null;unique"`
-	IP        string    `json:"ip"          gorm:"ip;not null"`
-	CreatedAt time.Time `json:"createdAt"   gorm:"created_at;not null"`
-	UpdatedAt time.Time `json:"updatedAt"   gorm:"updated_at;not null"`
+	ID        int       `json:"id"        gorm:"id;primaryKey"`
+	UUID      string    `json:"uuid"      gorm:"type:uuid;default:uuid_generate_v4()"`
+	Name      string    `json:"name"      gorm:"name;not null;unique"`
+	IP        string    `json:"ip"        gorm:"ip;not null"`
+	CreatedAt time.Time `json:"createdAt" gorm:"created_at;not null"`
+	UpdatedAt time.Time `json:"updatedAt" gorm:"updated_at;not null"`
 }

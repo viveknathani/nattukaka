@@ -1,6 +1,9 @@
 package shared
 
 import (
+	"net"
+	"strings"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -33,4 +36,18 @@ func GetUserID(c *fiber.Ctx) int {
 		return value
 	}
 	return 0
+}
+
+// IsDNSPointingToVPS checks if the DNS record for the domain points to the expected IP
+func IsDNSPointingToVPS(domain string, expectedIP string) (bool, error) {
+	ips, err := net.LookupHost(domain)
+	if err != nil {
+		return false, err
+	}
+	for _, ip := range ips {
+		if strings.TrimSpace(ip) == expectedIP {
+			return true, nil
+		}
+	}
+	return false, nil
 }
