@@ -6,13 +6,18 @@ import (
 
 // ServiceService provides methods for service management
 type ServiceService struct {
-	state *shared.State
+	state                    *shared.State
+	serviceDeploymentService *ServiceDeploymentService
 }
 
 // NewServiceService creates a new instance of ServiceService with the provided state.
-func NewServiceService(state *shared.State) *ServiceService {
+func NewServiceService(
+	state *shared.State,
+	serviceDeploymentService *ServiceDeploymentService,
+) *ServiceService {
 	return &ServiceService{
-		state: state,
+		state:                    state,
+		serviceDeploymentService: serviceDeploymentService,
 	}
 }
 
@@ -106,14 +111,29 @@ func (serviceService *ServiceService) UpdateService(
 func (serviceService *ServiceService) DeleteService(
 	userID int,
 	serviceID string,
-) (*shared.Service, *shared.JoyStickError) {
+) *shared.JoyStickError {
 	var service *shared.Service
 	err := serviceService.state.Database.Table("services").
 		Where("uuid = ? and owner_id = ?", serviceID, userID).
 		First(&service).
 		Error
 	if err != nil {
-		return nil, shared.ErrServiceNotFound
+		return shared.ErrServiceNotFound
+	}
+
+	err = serviceService.state.Database.Table("service_deployments").
+		Where("service_id = ?", service.ID).
+		Delete(&shared.ServiceDeployment{}).
+		Error
+	if err != nil {
+		serviceService.state.Logger.Error("error deleting service: " + err.Error())
+		return shared.ErrInternalServerError
+	}
+
+	err = serviceService.serviceDeploymentService.RemoveLatestDeployment(service.ID)
+	if err != nil {
+		serviceService.state.Logger.Error("error deleting service: " + err.Error())
+		return shared.ErrInternalServerError
 	}
 
 	err = serviceService.state.Database.Table("services").
@@ -122,25 +142,7 @@ func (serviceService *ServiceService) DeleteService(
 		Error
 	if err != nil {
 		serviceService.state.Logger.Error("error deleting service: " + err.Error())
-		return nil, shared.ErrInternalServerError
+		return shared.ErrInternalServerError
 	}
-	return service, nil
-}
-
-// FindNextNode returns the next node that can run a service deployment.
-// Right now, it just returns the first node in the database.
-// A more sophisticated design would involve:
-// 1. Checking if the node is online
-// 2. Checking if the node has enough resources to run the service deployment
-func (serviceService *ServiceService) FindNextNode() (*shared.Node, *shared.JoyStickError) {
-	var node *shared.Node
-	err := serviceService.state.Database.Table("nodes").
-		Order("created_at desc").
-		Limit(1).
-		First(&node).
-		Error
-	if err != nil {
-		return nil, shared.ErrInternalServerError
-	}
-	return node, nil
+	return nil
 }

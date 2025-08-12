@@ -4,18 +4,32 @@ import (
 	"joystick/controllers"
 	"joystick/services"
 	"joystick/shared"
+	"log"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 // SetupRoutes sets up the routes for the application.
 func SetupRoutes(app *fiber.App, state *shared.State) {
+	// Create player client - using localhost:50051 for now
+	playerClient, err := services.NewPlayerClient("localhost:50051")
+	if err != nil {
+		state.Logger.Error("Failed to create player client: " + err.Error())
+		log.Fatal("failed to create player client: " + err.Error())
+		return
+	}
+	if playerClient == nil {
+		state.Logger.Error("Player client is nil, continuing without it")
+	}
+
 	userService := services.NewUserService(state)
-	serviceService := services.NewServiceService(state)
+	serviceDeploymentService := services.NewServiceDeploymentService(state, playerClient)
+	serviceService := services.NewServiceService(state, serviceDeploymentService)
+
 	userController := controllers.NewUserController(userService)
 	serviceController := controllers.NewServiceController(serviceService)
 	serviceDeploymentController := controllers.NewServiceDeploymentController(
-		services.NewServiceDeploymentService(state),
+		serviceDeploymentService,
 	)
 
 	authMiddleware := services.GetAuthMiddleware(userService)

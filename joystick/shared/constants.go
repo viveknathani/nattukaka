@@ -23,4 +23,10 @@ const (
 
 	// ServiceDeploymentStatusSuccess ...
 	ServiceDeploymentStatusSuccess = "SUCCESS"
+
+	// ServiceDeploymentStatusBuilding ...
+	ServiceDeploymentStatusBuilding = "BUILDING"
+
+	// ServiceDeploymentStatusDeploying ...
+	ServiceDeploymentStatusDeploying = "DEPLOYING"
 )

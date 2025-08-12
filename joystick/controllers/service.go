@@ -101,17 +101,19 @@ func (serviceController *ServiceController) UpdateService(c *fiber.Ctx) error {
 
 // DeleteService deletes a service from the database if it exists.
 func (serviceController *ServiceController) DeleteService(c *fiber.Ctx) error {
-	service, err := serviceController.serviceService.DeleteService(
-		shared.GetUserID(c),
-		c.Params("serviceID"),
-	)
+	userID := shared.GetUserID(c)
+	serviceID := c.Params("serviceID")
+
+	// Use deployment service to handle complete cleanup
+	err := serviceController.serviceService.DeleteService(userID, serviceID)
 	if err != nil {
 		return shared.SendStandardResponse(c, fiber.StatusInternalServerError, nil, err.Error())
 	}
+
 	return shared.SendStandardResponse(
 		c,
 		fiber.StatusOK,
-		&map[string]interface{}{"service": service},
+		&map[string]interface{}{"message": "Service deleted successfully"},
 		"",
 	)
 }
