@@ -93,3 +93,9 @@ type Node struct {
 	CreatedAt time.Time `json:"createdAt" gorm:"created_at;not null"`
 	UpdatedAt time.Time `json:"updatedAt" gorm:"updated_at;not null"`
 }
+
+// ServiceWithLatestDeployment represents a service with its latest deployment info.
+type ServiceWithLatestDeployment struct {
+	Service          `json:",inline"`
+	LatestDeployment *ServiceDeployment `json:"latestDeployment"`
+}

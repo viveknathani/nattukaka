@@ -14,7 +14,101 @@
         </header>
         
         <main class="main-content">
-            <p>Welcome to your dashboard!</p>
+            <div class="services-section">
+                <div class="services-header">
+                    <h2>services</h2>
+                    <button id="createServiceBtn" class="create-service-btn">+</button>
+                </div>
+                <div id="servicesContainer">
+                    <div id="loadingSpinner" class="loading">Loading services...</div>
+                    <table id="servicesTable" class="services-table hidden">
+                        <thead>
+                            <tr>
+                                <th>name</th>
+                                <th>created at</th>
+                                <th>env vars</th>
+                                <th>port mapping</th>
+                                <th>status</th>
+                                <th>actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="servicesTableBody">
+                        </tbody>
+                    </table>
+                    <div id="noServices" class="no-services hidden">
+                        <p>No services found</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Environment Variables Modal -->
+            <div id="envVarsModal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Environment Variables</h3>
+                        <button id="closeEnvModal" class="close-btn">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <pre id="envVarsContent"></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create Service Modal -->
+            <div id="createServiceModal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Create New Service</h3>
+                        <button id="closeCreateModal" class="close-btn">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createServiceForm" class="create-form">
+                            <div class="form-group">
+                                <label for="serviceName">Service Name:</label>
+                                <input type="text" id="serviceName" name="serviceName" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="repositoryUrl">Repository URL:</label>
+                                <input type="url" id="repositoryUrl" name="repositoryUrl" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="branch">Branch:</label>
+                                <input type="text" id="branch" name="branch" value="master" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="envVars">Environment Variables (JSON):</label>
+                                <textarea id="envVarsInput" name="envVarsInput" placeholder='{"key": "value"}'>{}</textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Port Mappings:</label>
+                                <div id="portMappingContainer" class="port-mapping-container">
+                                    <div class="port-mapping-row">
+                                        <div>
+                                            <div class="port-label">Host Port</div>
+                                            <input type="number" class="host-port" placeholder="8080" required>
+                                        </div>
+                                        <div>
+                                            <div class="port-label">Container Port</div>
+                                            <input type="number" class="container-port" placeholder="8080" required>
+                                        </div>
+                                        <button type="button" class="remove-port-btn" onclick="removePortMapping(this)">×</button>
+                                    </div>
+                                </div>
+                                <button type="button" id="addPortBtn" class="add-port-btn">+ Add Port Mapping</button>
+                            </div>
+                            
+                            <button type="submit">Create Service</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toast notification -->
+            <div id="toast" class="toast hidden"></div>
         </main>
     </div>
     

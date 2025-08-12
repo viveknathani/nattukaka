@@ -63,7 +63,7 @@ func (serviceService *ServiceService) GetService(
 // GetAllServices returns all services from the database.
 func (serviceService *ServiceService) GetAllServices(
 	userID int,
-) ([]shared.Service, *shared.JoyStickError) {
+) ([]shared.ServiceWithLatestDeployment, *shared.JoyStickError) {
 	var services []shared.Service
 	err := serviceService.state.Database.Table("services").
 		Where("owner_id = ?", userID).
@@ -72,7 +72,25 @@ func (serviceService *ServiceService) GetAllServices(
 	if err != nil {
 		return nil, shared.ErrServiceNotFound
 	}
-	return services, nil
+
+	// Build response with latest deployment info
+	var result []shared.ServiceWithLatestDeployment
+	for _, service := range services {
+		// Get latest deployment for this service
+		var latestDeployment *shared.ServiceDeployment
+		serviceService.state.Database.Table("service_deployments").
+			Where("service_id = ?", service.ID).
+			Order("created_at DESC").
+			First(&latestDeployment)
+		
+		serviceWithDeployment := shared.ServiceWithLatestDeployment{
+			Service:          service,
+			LatestDeployment: latestDeployment,
+		}
+		result = append(result, serviceWithDeployment)
+	}
+	
+	return result, nil
 }
 
 // UpdateService updates a service in the database if it exists.
