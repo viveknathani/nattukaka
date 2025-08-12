@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"log"
 	"os"
 	"os/signal"
@@ -17,6 +18,9 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/gorm"
 )
+
+//go:embed static/*
+var staticFiles embed.FS
 
 func loadEnviromentVariables() {
 	if os.Getenv("ENV") == shared.EnvDevelopment {
@@ -71,7 +75,7 @@ func main() {
 	}))
 
 	// Setup routes
-	routes.SetupRoutes(app, &state)
+	routes.SetupRoutes(app, &state, staticFiles)
 
 	// Make a channel to listen for key events that can kill the process
 	done := make(chan os.Signal, 1)
