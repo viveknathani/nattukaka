@@ -1,6 +1,0 @@
-{
-  "go.lintTool": "staticcheck",
-  "go.lintFlags": [
-      "-checks=-ST1000"
-  ],
-}

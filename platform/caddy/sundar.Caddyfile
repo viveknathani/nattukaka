@@ -1,5 +1,5 @@
 nattukaka.dev {
-    root * /var/www/mymathboard
+    root * /var/www/nattukaka
     file_server
 }
 
