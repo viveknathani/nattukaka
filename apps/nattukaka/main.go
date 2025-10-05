@@ -66,7 +66,7 @@ func deployHandler(c *fiber.Ctx) error {
 	}
 
 	// Check if service exists
-	deployScript := filepath.Join("../../", serviceName, "deploy.sh")
+	deployScript := filepath.Join("/root/nattukaka/apps", serviceName, "deploy.sh")
 	if _, err := os.Stat(deployScript); os.IsNotExist(err) {
 		return c.Status(404).JSON(fiber.Map{
 			"error": fmt.Sprintf("Service '%s' not found", serviceName),
@@ -75,7 +75,7 @@ func deployHandler(c *fiber.Ctx) error {
 
 	// Execute deploy script and capture output
 	cmd := exec.Command("bash", deployScript)
-	cmd.Dir = filepath.Join("../../", serviceName)
+	cmd.Dir = filepath.Join("/root/nattukaka/apps", serviceName)
 
 	// Combine stdout and stderr
 	output, err := cmd.CombinedOutput()
