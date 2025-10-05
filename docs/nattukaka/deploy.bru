@@ -5,7 +5,11 @@ meta {
 }
 
 post {
-  url: {{baseUrl}}/deploy
+  url: {{baseUrl}}/deploy/numero
   body: none
   auth: none
+}
+
+headers {
+  X-API-KEY: {{apiKey}}
 }
