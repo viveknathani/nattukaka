@@ -1,6 +1,5 @@
 nattukaka.dev {
-    root * /var/www/nattukaka
-    file_server
+    reverse_proxy http://127.0.0.1:8080
 }
 
 vivekn.dev, viveknathani.nattukaka.dev {
@@ -11,22 +10,10 @@ teachyourselfmath.app, teachyourselfmath.nattukaka.dev {
     reverse_proxy http://127.0.0.1:8082
 }
 
-workdiff.nattukaka.dev {
-    reverse_proxy http://127.0.0.1:8083
-}
-
 numero.vivekn.dev {
     reverse_proxy http://127.0.0.1:8084
 }
 
 sv.nattukaka.dev, shambhaviandvivek.com {
     reverse_proxy http://127.0.0.1:8085
-}
-
-tools.nattukaka.dev {
-    reverse_proxy http://127.0.0.1:8086
-}
-
-chat.nattukaka.dev {
-    reverse_proxy http://127.0.0.1:8087
 }
