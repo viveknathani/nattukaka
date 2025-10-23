@@ -17,3 +17,7 @@ numero.vivekn.dev {
 sv.nattukaka.dev, shambhaviandvivek.com {
     reverse_proxy http://127.0.0.1:8085
 }
+
+tradeforces.app {
+    reverse_proxy http://127.0.0.1:8086
+}
