@@ -1,0 +1,15 @@
+meta {
+  name: deploy
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/deploy/numero
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-KEY: {{apiKey}}
+}

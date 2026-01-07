@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nattukaka</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #faf9f6;
+      }
+
+      a,
+      a:visited,
+      a:hover,
+      a:active {
+        color: #0475cc;
+      }
+
+      button {
+        background-color: #0475cc;
+        color: white;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 2px 4px;
+        cursor: pointer;
+      }
+
+      img {
+        display: block;
+        margin: 0 auto;
+        width: 80%;
+      }
+
+      @media (min-width: 600px) {
+        body {
+          max-width: 50%;
+          margin: auto;
+        }
+      }
+      .sunset-notice {
+        background-color: #f8f9fa;
+        border-left: 3px solid #6c757d;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        color: #6c757d;
+        font-style: italic;
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sunset-notice">
+      Note: This project has been retired. What follows is the story of what nattukaka once was.
+    </div>
+    
+    <h2>nattukaka</h2>
+    <p>
+      Welcome to nattukaka - my longest running software project with a silly
+      name. It is named after a famous character in an Indian TV show called
+      taarak mehta ka ooltah chashmah, who with his nephew, can get anything
+      done for his employer. It sounds like a cool name for a do-it-all-for-me
+      server!
+    </p>
+    <h3>early days</h3>
+    <p>
+      It started out as a simple bot that sends me the top 10 Hacker News
+      stories everyday at 7.00AM IST. I have written enough complex programs for
+      a living but I think this simple bot is the coolest of all the code I have
+      ever written.
+    </p>
+    <p>
+      Over the next few months, I thought of taking nattukaka and turning it
+      into a “i will do anything” tool. I made a notes app into this. I made a
+      todo app (we have all been there). I killed most of these projects after
+      few weeks of operation - because I was not using them. The HN bot was
+      still the most used program.
+    </p>
+    <h3>infrastructure is everything</h3>
+    <p>
+      When I set out to build
+      <a href="https://teachyourselfmath.app">teachyourselfmath</a>, I figured
+      that the web server hosting space is insanely pricey for hackers like me
+      who just want to run web servers for fun. With a database here and there
+      if needed.
+    </p>
+    <p>
+      And I keep getting these small scale ideas that are fun to build and be
+      consumed by the internet. I am not building the next Facebook here. I am
+      just having fun. I figured I don’t need the reliability offerings these
+      external services provide. I could just run my small scale services on my
+      own VPS.
+    </p>
+    <p>
+      This brings me to what nattukaka is today. It is a single VPS that runs my
+      entire software stack.
+    </p>
+    <h3>architecture</h3>
+    <p>
+      Every web service runs as a Docker container and has a deployment script
+      in the
+      <a href="https://github.com/viveknathani/nattukaka/master/apps/"
+        >apps directory</a
+      >.
+    </p>
+    <p>
+      The VPS also runs a PostgreSQL database and a Redis instance - but they
+      are not directly exposed to the internet. I can access them from anywhere
+      via <a href="https://tailscale.com">Tailscale</a>.
+    </p>
+    <h3>opening the gates</h3>
+    <img src="./picture.png">
+    <p>
+      When I was just starting out in my journey of programming - I had little
+      money to pay for cloud. It was really hard to figure out free hosting
+      solutions as an early college kid. While I can’t solve everybody’s
+      problems right now - I think I can help my friends and family out. If you
+      are someone who is close to me and wants to run a small scale project on
+      the internet, I’d be happy to host it for you, for free. You bring your
+      code. I run it for you.
+    </p>
+    <h3>closing thoughts</h3>
+    <p>
+      It has taken 2 years of fuck-around-and-find-out to arrive at nattukaka’s
+      current form. And I have had a lot of fun putting this all together. If
+      you also have small scale software projects of your own, you should
+      consider hosting them on your own too.
+    </p>
+    <p>
+      If you'd like to run this by yourself, here's the
+      <a href="https://github.com/viveknathani/nattukaka">github link</a> for
+      this project.
+    </p>
+    <p>Happy hacking!</p>
+    <p>- <a href="https://vivekn.dev">Vivek</a></p>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+nattukaka.dev {
+    reverse_proxy http://127.0.0.1:8080
+}
+
+vivekn.dev, viveknathani.nattukaka.dev {
+    reverse_proxy http://127.0.0.1:8081
+}
+
+teachyourselfmath.app, teachyourselfmath.nattukaka.dev {
+    reverse_proxy http://127.0.0.1:8082
+}
+
+numero.vivekn.dev {
+    reverse_proxy http://127.0.0.1:8084
+}
+
+sv.nattukaka.dev, shambhaviandvivek.com {
+    reverse_proxy http://127.0.0.1:8085
+}
+
+newsbot.nattukaka.dev {
+    reverse_proxy http://127.0.0.1:8086
+}
